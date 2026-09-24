@@ -1,0 +1,17 @@
+{
+  "name": "banknifty-indicators",
+  "url": "http://140.245.226.102:10000/public/banknifty-indicators.json",
+  "requested_at_utc": "2026-09-24T05:05:31.362714+00:00",
+  "requested_at_ist": "2026-09-24T10:35:31.362714+05:30",
+  "http_status": 200,
+  "elapsed_ms": 16.0,
+  "headers": {
+    "date": "Thu, 24 Sep 2026 05:05:30 GMT",
+    "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
+    "expires": "0",
+    "content-type": "application/json"
+  },
+  "bytes": 4452,
+  "error": null,
+  "parse_error": null
+}

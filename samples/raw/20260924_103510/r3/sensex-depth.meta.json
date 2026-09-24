@@ -1,0 +1,17 @@
+{
+  "name": "sensex-depth",
+  "url": "http://140.245.226.102:10000/public/sensex-depth.json",
+  "requested_at_utc": "2026-09-24T05:05:52.098789+00:00",
+  "requested_at_ist": "2026-09-24T10:35:52.098789+05:30",
+  "http_status": 503,
+  "elapsed_ms": 15.0,
+  "headers": {
+    "date": "Thu, 24 Sep 2026 05:05:51 GMT",
+    "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
+    "expires": "0",
+    "content-type": "application/json"
+  },
+  "bytes": 18153,
+  "error": null,
+  "parse_error": null
+}
