@@ -1,0 +1,2673 @@
+{
+ "service": "PSYGRID",
+ "symbol": "NIFTY",
+ "status": "LIVE",
+ "market_status": "OPEN",
+ "market_open": true,
+ "data_source": "DHAN_FULL_MARKET_DEPTH_WEBSOCKET",
+ "underlying_security_id": "13",
+ "exchange_segment": "NSE_FNO",
+ "instrument": "OPTIDX",
+ "depth_levels": 20,
+ "underlying_ltp": 23227.1,
+ "expiry": "2026-09-29",
+ "contract_count": 10,
+ "contracts": [
+  {
+   "security_id": "73908",
+   "strike": 23150.0,
+   "option_type": "CE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 168.0,
+     "quantity": 715,
+     "orders": 11
+    },
+    {
+     "level": 2,
+     "price": 167.95,
+     "quantity": 390,
+     "orders": 6
+    },
+    {
+     "level": 3,
+     "price": 167.9,
+     "quantity": 715,
+     "orders": 8
+    },
+    {
+     "level": 4,
+     "price": 167.85,
+     "quantity": 325,
+     "orders": 4
+    },
+    {
+     "level": 5,
+     "price": 167.8,
+     "quantity": 650,
+     "orders": 5
+    },
+    {
+     "level": 6,
+     "price": 167.75,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 7,
+     "price": 167.7,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 8,
+     "price": 167.65,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 9,
+     "price": 167.6,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 10,
+     "price": 167.55,
+     "quantity": 260,
+     "orders": 2
+    },
+    {
+     "level": 11,
+     "price": 167.5,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 12,
+     "price": 167.4,
+     "quantity": 260,
+     "orders": 2
+    },
+    {
+     "level": 13,
+     "price": 167.3,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 14,
+     "price": 167.2,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 15,
+     "price": 167.1,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 167.0,
+     "quantity": 2275,
+     "orders": 8
+    },
+    {
+     "level": 17,
+     "price": 166.7,
+     "quantity": 520,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 166.45,
+     "quantity": 1040,
+     "orders": 1
+    },
+    {
+     "level": 19,
+     "price": 166.4,
+     "quantity": 780,
+     "orders": 1
+    },
+    {
+     "level": 20,
+     "price": 166.2,
+     "quantity": 780,
+     "orders": 3
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 168.45,
+     "quantity": 390,
+     "orders": 5
+    },
+    {
+     "level": 2,
+     "price": 168.5,
+     "quantity": 455,
+     "orders": 7
+    },
+    {
+     "level": 3,
+     "price": 168.55,
+     "quantity": 520,
+     "orders": 6
+    },
+    {
+     "level": 4,
+     "price": 168.6,
+     "quantity": 715,
+     "orders": 7
+    },
+    {
+     "level": 5,
+     "price": 168.65,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 6,
+     "price": 168.7,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 168.75,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 8,
+     "price": 168.8,
+     "quantity": 260,
+     "orders": 1
+    },
+    {
+     "level": 9,
+     "price": 168.85,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 10,
+     "price": 168.9,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 11,
+     "price": 168.95,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 12,
+     "price": 169.0,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 13,
+     "price": 169.05,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 14,
+     "price": 169.1,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 15,
+     "price": 169.15,
+     "quantity": 780,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 169.2,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 17,
+     "price": 169.25,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 169.3,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 19,
+     "price": 169.35,
+     "quantity": 520,
+     "orders": 1
+    },
+    {
+     "level": 20,
+     "price": 169.4,
+     "quantity": 195,
+     "orders": 1
+    }
+   ],
+   "last_price": 169.45,
+   "average_price": 171.5,
+   "buy_quantity": 243685,
+   "sell_quantity": 238550,
+   "volume": 7268755,
+   "oi": 1497405,
+   "ohlc": {
+    "open": 200.05,
+    "close": 327.6,
+    "high": 223.85,
+    "low": 153.05
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280968+05:30",
+   "updated_at": "2026-09-24T10:35:10.373244+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73909",
+   "strike": 23150.0,
+   "option_type": "PE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 73.4,
+     "quantity": 2340,
+     "orders": 10
+    },
+    {
+     "level": 2,
+     "price": 73.35,
+     "quantity": 3965,
+     "orders": 11
+    },
+    {
+     "level": 3,
+     "price": 73.3,
+     "quantity": 2470,
+     "orders": 11
+    },
+    {
+     "level": 4,
+     "price": 73.25,
+     "quantity": 2275,
+     "orders": 12
+    },
+    {
+     "level": 5,
+     "price": 73.2,
+     "quantity": 1950,
+     "orders": 12
+    },
+    {
+     "level": 6,
+     "price": 73.15,
+     "quantity": 1040,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 73.1,
+     "quantity": 2925,
+     "orders": 8
+    },
+    {
+     "level": 8,
+     "price": 73.05,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 9,
+     "price": 73.0,
+     "quantity": 1885,
+     "orders": 6
+    },
+    {
+     "level": 10,
+     "price": 72.95,
+     "quantity": 585,
+     "orders": 3
+    },
+    {
+     "level": 11,
+     "price": 72.9,
+     "quantity": 1235,
+     "orders": 6
+    },
+    {
+     "level": 12,
+     "price": 72.85,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 72.8,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 72.75,
+     "quantity": 1495,
+     "orders": 4
+    },
+    {
+     "level": 15,
+     "price": 72.7,
+     "quantity": 910,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 72.65,
+     "quantity": 780,
+     "orders": 3
+    },
+    {
+     "level": 17,
+     "price": 72.6,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 72.55,
+     "quantity": 455,
+     "orders": 2
+    },
+    {
+     "level": 19,
+     "price": 72.5,
+     "quantity": 1365,
+     "orders": 1
+    },
+    {
+     "level": 20,
+     "price": 72.45,
+     "quantity": 195,
+     "orders": 2
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 73.65,
+     "quantity": 4875,
+     "orders": 23
+    },
+    {
+     "level": 2,
+     "price": 73.7,
+     "quantity": 1560,
+     "orders": 7
+    },
+    {
+     "level": 3,
+     "price": 73.75,
+     "quantity": 2470,
+     "orders": 11
+    },
+    {
+     "level": 4,
+     "price": 73.8,
+     "quantity": 1885,
+     "orders": 8
+    },
+    {
+     "level": 5,
+     "price": 73.85,
+     "quantity": 2015,
+     "orders": 11
+    },
+    {
+     "level": 6,
+     "price": 73.9,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 73.95,
+     "quantity": 1365,
+     "orders": 6
+    },
+    {
+     "level": 8,
+     "price": 74.0,
+     "quantity": 1690,
+     "orders": 7
+    },
+    {
+     "level": 9,
+     "price": 74.05,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 10,
+     "price": 74.1,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 11,
+     "price": 74.15,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 12,
+     "price": 74.2,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 13,
+     "price": 74.25,
+     "quantity": 780,
+     "orders": 2
+    },
+    {
+     "level": 14,
+     "price": 74.3,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 15,
+     "price": 74.35,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 16,
+     "price": 74.4,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 17,
+     "price": 74.45,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 74.55,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 19,
+     "price": 74.6,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 20,
+     "price": 74.65,
+     "quantity": 780,
+     "orders": 2
+    }
+   ],
+   "last_price": 72.4,
+   "average_price": 74.25,
+   "buy_quantity": 1942525,
+   "sell_quantity": 342225,
+   "volume": 22069515,
+   "oi": 3266250,
+   "ohlc": {
+    "open": 52,
+    "close": 25.8,
+    "high": 88.6,
+    "low": 50.3
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280972+05:30",
+   "updated_at": "2026-09-24T10:35:10.373255+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73910",
+   "strike": 23200.0,
+   "option_type": "CE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 137.0,
+     "quantity": 2470,
+     "orders": 19
+    },
+    {
+     "level": 2,
+     "price": 136.95,
+     "quantity": 1365,
+     "orders": 5
+    },
+    {
+     "level": 3,
+     "price": 136.9,
+     "quantity": 1300,
+     "orders": 6
+    },
+    {
+     "level": 4,
+     "price": 136.85,
+     "quantity": 1040,
+     "orders": 6
+    },
+    {
+     "level": 5,
+     "price": 136.8,
+     "quantity": 1235,
+     "orders": 8
+    },
+    {
+     "level": 6,
+     "price": 136.75,
+     "quantity": 650,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 136.7,
+     "quantity": 1170,
+     "orders": 5
+    },
+    {
+     "level": 8,
+     "price": 136.6,
+     "quantity": 910,
+     "orders": 5
+    },
+    {
+     "level": 9,
+     "price": 136.5,
+     "quantity": 1170,
+     "orders": 6
+    },
+    {
+     "level": 10,
+     "price": 136.45,
+     "quantity": 975,
+     "orders": 4
+    },
+    {
+     "level": 11,
+     "price": 136.4,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 12,
+     "price": 136.3,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 136.25,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 14,
+     "price": 136.15,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 15,
+     "price": 136.1,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 16,
+     "price": 136.05,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 17,
+     "price": 136.0,
+     "quantity": 7735,
+     "orders": 31
+    },
+    {
+     "level": 18,
+     "price": 135.95,
+     "quantity": 585,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 135.85,
+     "quantity": 845,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 135.75,
+     "quantity": 130,
+     "orders": 2
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 137.35,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 2,
+     "price": 137.4,
+     "quantity": 1755,
+     "orders": 8
+    },
+    {
+     "level": 3,
+     "price": 137.45,
+     "quantity": 1820,
+     "orders": 10
+    },
+    {
+     "level": 4,
+     "price": 137.5,
+     "quantity": 2600,
+     "orders": 13
+    },
+    {
+     "level": 5,
+     "price": 137.55,
+     "quantity": 910,
+     "orders": 5
+    },
+    {
+     "level": 6,
+     "price": 137.6,
+     "quantity": 2340,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 137.65,
+     "quantity": 1820,
+     "orders": 3
+    },
+    {
+     "level": 8,
+     "price": 137.7,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 9,
+     "price": 137.75,
+     "quantity": 1040,
+     "orders": 4
+    },
+    {
+     "level": 10,
+     "price": 137.8,
+     "quantity": 650,
+     "orders": 6
+    },
+    {
+     "level": 11,
+     "price": 137.85,
+     "quantity": 1430,
+     "orders": 5
+    },
+    {
+     "level": 12,
+     "price": 137.9,
+     "quantity": 1430,
+     "orders": 4
+    },
+    {
+     "level": 13,
+     "price": 137.95,
+     "quantity": 1040,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 138.0,
+     "quantity": 2730,
+     "orders": 18
+    },
+    {
+     "level": 15,
+     "price": 138.05,
+     "quantity": 260,
+     "orders": 1
+    },
+    {
+     "level": 16,
+     "price": 138.1,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 17,
+     "price": 138.15,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 18,
+     "price": 138.2,
+     "quantity": 1105,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 138.25,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 138.3,
+     "quantity": 585,
+     "orders": 3
+    }
+   ],
+   "last_price": 137.5,
+   "average_price": 141.96,
+   "buy_quantity": 2454855,
+   "sell_quantity": 1271075,
+   "volume": 40025765,
+   "oi": 9572095,
+   "ohlc": {
+    "open": 175.95,
+    "close": 282.95,
+    "high": 186.15,
+    "low": 124.4
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280976+05:30",
+   "updated_at": "2026-09-24T10:35:10.373176+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73911",
+   "strike": 23200.0,
+   "option_type": "PE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 92.2,
+     "quantity": 1170,
+     "orders": 10
+    },
+    {
+     "level": 2,
+     "price": 92.15,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 3,
+     "price": 92.1,
+     "quantity": 1105,
+     "orders": 7
+    },
+    {
+     "level": 4,
+     "price": 92.05,
+     "quantity": 1300,
+     "orders": 10
+    },
+    {
+     "level": 5,
+     "price": 92.0,
+     "quantity": 1365,
+     "orders": 8
+    },
+    {
+     "level": 6,
+     "price": 91.95,
+     "quantity": 1755,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 91.9,
+     "quantity": 845,
+     "orders": 7
+    },
+    {
+     "level": 8,
+     "price": 91.85,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 9,
+     "price": 91.8,
+     "quantity": 650,
+     "orders": 5
+    },
+    {
+     "level": 10,
+     "price": 91.75,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 11,
+     "price": 91.7,
+     "quantity": 910,
+     "orders": 4
+    },
+    {
+     "level": 12,
+     "price": 91.65,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 91.6,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 91.55,
+     "quantity": 455,
+     "orders": 4
+    },
+    {
+     "level": 15,
+     "price": 91.5,
+     "quantity": 455,
+     "orders": 4
+    },
+    {
+     "level": 16,
+     "price": 91.45,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 17,
+     "price": 91.4,
+     "quantity": 1430,
+     "orders": 5
+    },
+    {
+     "level": 18,
+     "price": 91.35,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 91.3,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 91.25,
+     "quantity": 195,
+     "orders": 3
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 92.45,
+     "quantity": 780,
+     "orders": 6
+    },
+    {
+     "level": 2,
+     "price": 92.5,
+     "quantity": 1560,
+     "orders": 13
+    },
+    {
+     "level": 3,
+     "price": 92.55,
+     "quantity": 1625,
+     "orders": 12
+    },
+    {
+     "level": 4,
+     "price": 92.6,
+     "quantity": 2210,
+     "orders": 12
+    },
+    {
+     "level": 5,
+     "price": 92.65,
+     "quantity": 975,
+     "orders": 7
+    },
+    {
+     "level": 6,
+     "price": 92.7,
+     "quantity": 650,
+     "orders": 7
+    },
+    {
+     "level": 7,
+     "price": 92.75,
+     "quantity": 1105,
+     "orders": 7
+    },
+    {
+     "level": 8,
+     "price": 92.8,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 9,
+     "price": 92.85,
+     "quantity": 455,
+     "orders": 2
+    },
+    {
+     "level": 10,
+     "price": 92.9,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 11,
+     "price": 92.95,
+     "quantity": 715,
+     "orders": 3
+    },
+    {
+     "level": 12,
+     "price": 93.0,
+     "quantity": 1820,
+     "orders": 9
+    },
+    {
+     "level": 13,
+     "price": 93.05,
+     "quantity": 1300,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 93.1,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 15,
+     "price": 93.15,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 16,
+     "price": 93.2,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 17,
+     "price": 93.25,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 18,
+     "price": 93.3,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 19,
+     "price": 93.35,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 93.4,
+     "quantity": 585,
+     "orders": 3
+    }
+   ],
+   "last_price": 91.2,
+   "average_price": 93.06,
+   "buy_quantity": 2514200,
+   "sell_quantity": 890890,
+   "volume": 71543940,
+   "oi": 9337510,
+   "ohlc": {
+    "open": 66.8,
+    "close": 32.55,
+    "high": 109.9,
+    "low": 62.55
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280980+05:30",
+   "updated_at": "2026-09-24T10:35:10.373194+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73921",
+   "strike": 23250.0,
+   "option_type": "CE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 109.0,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 2,
+     "price": 108.95,
+     "quantity": 845,
+     "orders": 6
+    },
+    {
+     "level": 3,
+     "price": 108.9,
+     "quantity": 1365,
+     "orders": 10
+    },
+    {
+     "level": 4,
+     "price": 108.85,
+     "quantity": 1235,
+     "orders": 8
+    },
+    {
+     "level": 5,
+     "price": 108.8,
+     "quantity": 1430,
+     "orders": 10
+    },
+    {
+     "level": 6,
+     "price": 108.75,
+     "quantity": 1755,
+     "orders": 10
+    },
+    {
+     "level": 7,
+     "price": 108.7,
+     "quantity": 1300,
+     "orders": 6
+    },
+    {
+     "level": 8,
+     "price": 108.65,
+     "quantity": 1300,
+     "orders": 8
+    },
+    {
+     "level": 9,
+     "price": 108.6,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 10,
+     "price": 108.55,
+     "quantity": 1170,
+     "orders": 6
+    },
+    {
+     "level": 11,
+     "price": 108.5,
+     "quantity": 1105,
+     "orders": 6
+    },
+    {
+     "level": 12,
+     "price": 108.45,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 13,
+     "price": 108.4,
+     "quantity": 1885,
+     "orders": 3
+    },
+    {
+     "level": 14,
+     "price": 108.35,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 15,
+     "price": 108.3,
+     "quantity": 910,
+     "orders": 7
+    },
+    {
+     "level": 16,
+     "price": 108.25,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 17,
+     "price": 108.2,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 108.15,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 19,
+     "price": 108.1,
+     "quantity": 780,
+     "orders": 3
+    },
+    {
+     "level": 20,
+     "price": 108.05,
+     "quantity": 130,
+     "orders": 2
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 109.25,
+     "quantity": 1040,
+     "orders": 8
+    },
+    {
+     "level": 2,
+     "price": 109.3,
+     "quantity": 1170,
+     "orders": 7
+    },
+    {
+     "level": 3,
+     "price": 109.35,
+     "quantity": 2535,
+     "orders": 10
+    },
+    {
+     "level": 4,
+     "price": 109.4,
+     "quantity": 1885,
+     "orders": 13
+    },
+    {
+     "level": 5,
+     "price": 109.45,
+     "quantity": 780,
+     "orders": 5
+    },
+    {
+     "level": 6,
+     "price": 109.5,
+     "quantity": 1040,
+     "orders": 6
+    },
+    {
+     "level": 7,
+     "price": 109.55,
+     "quantity": 585,
+     "orders": 4
+    },
+    {
+     "level": 8,
+     "price": 109.6,
+     "quantity": 650,
+     "orders": 2
+    },
+    {
+     "level": 9,
+     "price": 109.65,
+     "quantity": 520,
+     "orders": 5
+    },
+    {
+     "level": 10,
+     "price": 109.7,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 11,
+     "price": 109.75,
+     "quantity": 1495,
+     "orders": 2
+    },
+    {
+     "level": 12,
+     "price": 109.8,
+     "quantity": 975,
+     "orders": 4
+    },
+    {
+     "level": 13,
+     "price": 109.85,
+     "quantity": 260,
+     "orders": 2
+    },
+    {
+     "level": 14,
+     "price": 109.9,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 15,
+     "price": 109.95,
+     "quantity": 650,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 110.0,
+     "quantity": 8515,
+     "orders": 15
+    },
+    {
+     "level": 17,
+     "price": 110.05,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 110.1,
+     "quantity": 260,
+     "orders": 2
+    },
+    {
+     "level": 19,
+     "price": 110.15,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 20,
+     "price": 110.2,
+     "quantity": 325,
+     "orders": 3
+    }
+   ],
+   "last_price": 109.55,
+   "average_price": 113.95,
+   "buy_quantity": 2384330,
+   "sell_quantity": 1261455,
+   "volume": 41108210,
+   "oi": 9398935,
+   "ohlc": {
+    "open": 131.95,
+    "close": 242.25,
+    "high": 151.8,
+    "low": 99.15
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280984+05:30",
+   "updated_at": "2026-09-24T10:35:10.373212+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73922",
+   "strike": 23250.0,
+   "option_type": "PE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 114.3,
+     "quantity": 715,
+     "orders": 8
+    },
+    {
+     "level": 2,
+     "price": 114.25,
+     "quantity": 975,
+     "orders": 9
+    },
+    {
+     "level": 3,
+     "price": 114.2,
+     "quantity": 1170,
+     "orders": 11
+    },
+    {
+     "level": 4,
+     "price": 114.15,
+     "quantity": 1040,
+     "orders": 7
+    },
+    {
+     "level": 5,
+     "price": 114.1,
+     "quantity": 1040,
+     "orders": 8
+    },
+    {
+     "level": 6,
+     "price": 114.05,
+     "quantity": 1105,
+     "orders": 5
+    },
+    {
+     "level": 7,
+     "price": 114.0,
+     "quantity": 1625,
+     "orders": 10
+    },
+    {
+     "level": 8,
+     "price": 113.95,
+     "quantity": 975,
+     "orders": 7
+    },
+    {
+     "level": 9,
+     "price": 113.9,
+     "quantity": 455,
+     "orders": 5
+    },
+    {
+     "level": 10,
+     "price": 113.85,
+     "quantity": 650,
+     "orders": 6
+    },
+    {
+     "level": 11,
+     "price": 113.8,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 12,
+     "price": 113.75,
+     "quantity": 260,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 113.7,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 113.65,
+     "quantity": 650,
+     "orders": 6
+    },
+    {
+     "level": 15,
+     "price": 113.6,
+     "quantity": 520,
+     "orders": 5
+    },
+    {
+     "level": 16,
+     "price": 113.55,
+     "quantity": 260,
+     "orders": 3
+    },
+    {
+     "level": 17,
+     "price": 113.5,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 18,
+     "price": 113.45,
+     "quantity": 455,
+     "orders": 1
+    },
+    {
+     "level": 19,
+     "price": 113.4,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 20,
+     "price": 113.35,
+     "quantity": 325,
+     "orders": 2
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 114.6,
+     "quantity": 520,
+     "orders": 6
+    },
+    {
+     "level": 2,
+     "price": 114.65,
+     "quantity": 1365,
+     "orders": 12
+    },
+    {
+     "level": 3,
+     "price": 114.7,
+     "quantity": 1495,
+     "orders": 13
+    },
+    {
+     "level": 4,
+     "price": 114.75,
+     "quantity": 780,
+     "orders": 6
+    },
+    {
+     "level": 5,
+     "price": 114.8,
+     "quantity": 1040,
+     "orders": 10
+    },
+    {
+     "level": 6,
+     "price": 114.85,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 7,
+     "price": 114.9,
+     "quantity": 910,
+     "orders": 7
+    },
+    {
+     "level": 8,
+     "price": 114.95,
+     "quantity": 975,
+     "orders": 6
+    },
+    {
+     "level": 9,
+     "price": 115.0,
+     "quantity": 1820,
+     "orders": 9
+    },
+    {
+     "level": 10,
+     "price": 115.05,
+     "quantity": 260,
+     "orders": 3
+    },
+    {
+     "level": 11,
+     "price": 115.1,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 12,
+     "price": 115.15,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 13,
+     "price": 115.2,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 14,
+     "price": 115.25,
+     "quantity": 455,
+     "orders": 4
+    },
+    {
+     "level": 15,
+     "price": 115.35,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 115.4,
+     "quantity": 585,
+     "orders": 5
+    },
+    {
+     "level": 17,
+     "price": 115.5,
+     "quantity": 390,
+     "orders": 4
+    },
+    {
+     "level": 18,
+     "price": 115.55,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 115.6,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 20,
+     "price": 115.65,
+     "quantity": 650,
+     "orders": 3
+    }
+   ],
+   "last_price": 113.05,
+   "average_price": 113.65,
+   "buy_quantity": 2127840,
+   "sell_quantity": 418470,
+   "volume": 50488230,
+   "oi": 5530330,
+   "ohlc": {
+    "open": 81.55,
+    "close": 41.2,
+    "high": 134.65,
+    "low": 78.15
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280988+05:30",
+   "updated_at": "2026-09-24T10:35:10.373227+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73923",
+   "strike": 23300.0,
+   "option_type": "CE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 85.25,
+     "quantity": 910,
+     "orders": 3
+    },
+    {
+     "level": 2,
+     "price": 85.2,
+     "quantity": 1495,
+     "orders": 9
+    },
+    {
+     "level": 3,
+     "price": 85.15,
+     "quantity": 1885,
+     "orders": 11
+    },
+    {
+     "level": 4,
+     "price": 85.1,
+     "quantity": 1430,
+     "orders": 8
+    },
+    {
+     "level": 5,
+     "price": 85.05,
+     "quantity": 2405,
+     "orders": 13
+    },
+    {
+     "level": 6,
+     "price": 85.0,
+     "quantity": 12675,
+     "orders": 51
+    },
+    {
+     "level": 7,
+     "price": 84.95,
+     "quantity": 715,
+     "orders": 2
+    },
+    {
+     "level": 8,
+     "price": 84.9,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 9,
+     "price": 84.85,
+     "quantity": 1495,
+     "orders": 2
+    },
+    {
+     "level": 10,
+     "price": 84.8,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 11,
+     "price": 84.75,
+     "quantity": 1105,
+     "orders": 4
+    },
+    {
+     "level": 12,
+     "price": 84.7,
+     "quantity": 1690,
+     "orders": 9
+    },
+    {
+     "level": 13,
+     "price": 84.65,
+     "quantity": 585,
+     "orders": 3
+    },
+    {
+     "level": 14,
+     "price": 84.6,
+     "quantity": 715,
+     "orders": 5
+    },
+    {
+     "level": 15,
+     "price": 84.55,
+     "quantity": 715,
+     "orders": 5
+    },
+    {
+     "level": 16,
+     "price": 84.5,
+     "quantity": 1560,
+     "orders": 8
+    },
+    {
+     "level": 17,
+     "price": 84.45,
+     "quantity": 650,
+     "orders": 4
+    },
+    {
+     "level": 18,
+     "price": 84.4,
+     "quantity": 585,
+     "orders": 5
+    },
+    {
+     "level": 19,
+     "price": 84.35,
+     "quantity": 780,
+     "orders": 4
+    },
+    {
+     "level": 20,
+     "price": 84.3,
+     "quantity": 325,
+     "orders": 3
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 85.4,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 2,
+     "price": 85.45,
+     "quantity": 1430,
+     "orders": 7
+    },
+    {
+     "level": 3,
+     "price": 85.5,
+     "quantity": 1885,
+     "orders": 11
+    },
+    {
+     "level": 4,
+     "price": 85.55,
+     "quantity": 2275,
+     "orders": 15
+    },
+    {
+     "level": 5,
+     "price": 85.6,
+     "quantity": 1690,
+     "orders": 8
+    },
+    {
+     "level": 6,
+     "price": 85.65,
+     "quantity": 2275,
+     "orders": 9
+    },
+    {
+     "level": 7,
+     "price": 85.7,
+     "quantity": 1365,
+     "orders": 7
+    },
+    {
+     "level": 8,
+     "price": 85.75,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 9,
+     "price": 85.8,
+     "quantity": 1755,
+     "orders": 7
+    },
+    {
+     "level": 10,
+     "price": 85.85,
+     "quantity": 585,
+     "orders": 4
+    },
+    {
+     "level": 11,
+     "price": 85.9,
+     "quantity": 780,
+     "orders": 6
+    },
+    {
+     "level": 12,
+     "price": 85.95,
+     "quantity": 910,
+     "orders": 4
+    },
+    {
+     "level": 13,
+     "price": 86.0,
+     "quantity": 28015,
+     "orders": 26
+    },
+    {
+     "level": 14,
+     "price": 86.05,
+     "quantity": 1820,
+     "orders": 4
+    },
+    {
+     "level": 15,
+     "price": 86.1,
+     "quantity": 585,
+     "orders": 3
+    },
+    {
+     "level": 16,
+     "price": 86.15,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 17,
+     "price": 86.2,
+     "quantity": 585,
+     "orders": 3
+    },
+    {
+     "level": 18,
+     "price": 86.25,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 19,
+     "price": 86.3,
+     "quantity": 2340,
+     "orders": 7
+    },
+    {
+     "level": 20,
+     "price": 86.35,
+     "quantity": 8840,
+     "orders": 8
+    }
+   ],
+   "last_price": 85.8,
+   "average_price": 90.73,
+   "buy_quantity": 2438735,
+   "sell_quantity": 1630785,
+   "volume": 45613100,
+   "oi": 12673570,
+   "ohlc": {
+    "open": 82.6,
+    "close": 203.25,
+    "high": 120.8,
+    "low": 77.7
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280991+05:30",
+   "updated_at": "2026-09-24T10:35:10.373268+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73924",
+   "strike": 23300.0,
+   "option_type": "PE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 140.4,
+     "quantity": 325,
+     "orders": 4
+    },
+    {
+     "level": 2,
+     "price": 140.35,
+     "quantity": 715,
+     "orders": 11
+    },
+    {
+     "level": 3,
+     "price": 140.3,
+     "quantity": 585,
+     "orders": 9
+    },
+    {
+     "level": 4,
+     "price": 140.25,
+     "quantity": 910,
+     "orders": 8
+    },
+    {
+     "level": 5,
+     "price": 140.2,
+     "quantity": 1170,
+     "orders": 11
+    },
+    {
+     "level": 6,
+     "price": 140.15,
+     "quantity": 780,
+     "orders": 7
+    },
+    {
+     "level": 7,
+     "price": 140.1,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 8,
+     "price": 140.05,
+     "quantity": 455,
+     "orders": 3
+    },
+    {
+     "level": 9,
+     "price": 140.0,
+     "quantity": 7020,
+     "orders": 9
+    },
+    {
+     "level": 10,
+     "price": 139.95,
+     "quantity": 260,
+     "orders": 2
+    },
+    {
+     "level": 11,
+     "price": 139.9,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 12,
+     "price": 139.85,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 13,
+     "price": 139.8,
+     "quantity": 455,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 139.75,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 15,
+     "price": 139.7,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 16,
+     "price": 139.65,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 17,
+     "price": 139.6,
+     "quantity": 650,
+     "orders": 5
+    },
+    {
+     "level": 18,
+     "price": 139.55,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 139.5,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 139.45,
+     "quantity": 390,
+     "orders": 3
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 140.75,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 2,
+     "price": 140.8,
+     "quantity": 910,
+     "orders": 12
+    },
+    {
+     "level": 3,
+     "price": 140.85,
+     "quantity": 715,
+     "orders": 7
+    },
+    {
+     "level": 4,
+     "price": 140.9,
+     "quantity": 650,
+     "orders": 6
+    },
+    {
+     "level": 5,
+     "price": 140.95,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 6,
+     "price": 141.0,
+     "quantity": 3640,
+     "orders": 14
+    },
+    {
+     "level": 7,
+     "price": 141.05,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 8,
+     "price": 141.1,
+     "quantity": 195,
+     "orders": 3
+    },
+    {
+     "level": 9,
+     "price": 141.15,
+     "quantity": 455,
+     "orders": 5
+    },
+    {
+     "level": 10,
+     "price": 141.2,
+     "quantity": 195,
+     "orders": 1
+    },
+    {
+     "level": 11,
+     "price": 141.25,
+     "quantity": 455,
+     "orders": 4
+    },
+    {
+     "level": 12,
+     "price": 141.3,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 13,
+     "price": 141.4,
+     "quantity": 390,
+     "orders": 4
+    },
+    {
+     "level": 14,
+     "price": 141.45,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 15,
+     "price": 141.5,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 141.55,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 17,
+     "price": 141.6,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 141.65,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 19,
+     "price": 141.7,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 141.75,
+     "quantity": 325,
+     "orders": 2
+    }
+   ],
+   "last_price": 138.9,
+   "average_price": 137.24,
+   "buy_quantity": 2161120,
+   "sell_quantity": 450905,
+   "volume": 46738315,
+   "oi": 8823815,
+   "ohlc": {
+    "open": 101,
+    "close": 52.6,
+    "high": 163,
+    "low": 96.5
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280995+05:30",
+   "updated_at": "2026-09-24T10:35:10.373282+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73925",
+   "strike": 23350.0,
+   "option_type": "CE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 65.15,
+     "quantity": 845,
+     "orders": 9
+    },
+    {
+     "level": 2,
+     "price": 65.1,
+     "quantity": 1820,
+     "orders": 11
+    },
+    {
+     "level": 3,
+     "price": 65.05,
+     "quantity": 845,
+     "orders": 6
+    },
+    {
+     "level": 4,
+     "price": 65.0,
+     "quantity": 3445,
+     "orders": 27
+    },
+    {
+     "level": 5,
+     "price": 64.95,
+     "quantity": 2145,
+     "orders": 8
+    },
+    {
+     "level": 6,
+     "price": 64.9,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 7,
+     "price": 64.85,
+     "quantity": 780,
+     "orders": 3
+    },
+    {
+     "level": 8,
+     "price": 64.8,
+     "quantity": 1560,
+     "orders": 7
+    },
+    {
+     "level": 9,
+     "price": 64.75,
+     "quantity": 650,
+     "orders": 5
+    },
+    {
+     "level": 10,
+     "price": 64.7,
+     "quantity": 780,
+     "orders": 6
+    },
+    {
+     "level": 11,
+     "price": 64.65,
+     "quantity": 325,
+     "orders": 4
+    },
+    {
+     "level": 12,
+     "price": 64.6,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 64.55,
+     "quantity": 325,
+     "orders": 3
+    },
+    {
+     "level": 14,
+     "price": 64.5,
+     "quantity": 1820,
+     "orders": 6
+    },
+    {
+     "level": 15,
+     "price": 64.35,
+     "quantity": 845,
+     "orders": 5
+    },
+    {
+     "level": 16,
+     "price": 64.3,
+     "quantity": 455,
+     "orders": 1
+    },
+    {
+     "level": 17,
+     "price": 64.25,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 64.2,
+     "quantity": 390,
+     "orders": 5
+    },
+    {
+     "level": 19,
+     "price": 64.15,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 64.1,
+     "quantity": 1690,
+     "orders": 4
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 65.25,
+     "quantity": 455,
+     "orders": 3
+    },
+    {
+     "level": 2,
+     "price": 65.3,
+     "quantity": 520,
+     "orders": 2
+    },
+    {
+     "level": 3,
+     "price": 65.35,
+     "quantity": 1560,
+     "orders": 8
+    },
+    {
+     "level": 4,
+     "price": 65.4,
+     "quantity": 1495,
+     "orders": 10
+    },
+    {
+     "level": 5,
+     "price": 65.45,
+     "quantity": 1105,
+     "orders": 5
+    },
+    {
+     "level": 6,
+     "price": 65.5,
+     "quantity": 1690,
+     "orders": 8
+    },
+    {
+     "level": 7,
+     "price": 65.55,
+     "quantity": 1560,
+     "orders": 9
+    },
+    {
+     "level": 8,
+     "price": 65.6,
+     "quantity": 2015,
+     "orders": 10
+    },
+    {
+     "level": 9,
+     "price": 65.65,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 10,
+     "price": 65.7,
+     "quantity": 910,
+     "orders": 6
+    },
+    {
+     "level": 11,
+     "price": 65.75,
+     "quantity": 780,
+     "orders": 5
+    },
+    {
+     "level": 12,
+     "price": 65.8,
+     "quantity": 1105,
+     "orders": 6
+    },
+    {
+     "level": 13,
+     "price": 65.85,
+     "quantity": 715,
+     "orders": 5
+    },
+    {
+     "level": 14,
+     "price": 65.9,
+     "quantity": 1625,
+     "orders": 3
+    },
+    {
+     "level": 15,
+     "price": 65.95,
+     "quantity": 1755,
+     "orders": 4
+    },
+    {
+     "level": 16,
+     "price": 66.0,
+     "quantity": 2535,
+     "orders": 11
+    },
+    {
+     "level": 17,
+     "price": 66.05,
+     "quantity": 650,
+     "orders": 4
+    },
+    {
+     "level": 18,
+     "price": 66.1,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 19,
+     "price": 66.15,
+     "quantity": 1560,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 66.2,
+     "quantity": 195,
+     "orders": 1
+    }
+   ],
+   "last_price": 65.8,
+   "average_price": 70.13,
+   "buy_quantity": 2048865,
+   "sell_quantity": 604240,
+   "volume": 16249480,
+   "oi": 3882645,
+   "ohlc": {
+    "open": 74.5,
+    "close": 167.25,
+    "high": 93.75,
+    "low": 59.8
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.280999+05:30",
+   "updated_at": "2026-09-24T10:35:10.373320+05:30",
+   "crossed_book": false
+  },
+  {
+   "security_id": "73926",
+   "strike": 23350.0,
+   "option_type": "PE",
+   "expiry": "2026-09-29",
+   "bid": [
+    {
+     "level": 1,
+     "price": 170.1,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 2,
+     "price": 170.05,
+     "quantity": 260,
+     "orders": 4
+    },
+    {
+     "level": 3,
+     "price": 170.0,
+     "quantity": 975,
+     "orders": 8
+    },
+    {
+     "level": 4,
+     "price": 169.95,
+     "quantity": 325,
+     "orders": 4
+    },
+    {
+     "level": 5,
+     "price": 169.9,
+     "quantity": 1105,
+     "orders": 5
+    },
+    {
+     "level": 6,
+     "price": 169.85,
+     "quantity": 520,
+     "orders": 1
+    },
+    {
+     "level": 7,
+     "price": 169.8,
+     "quantity": 1040,
+     "orders": 5
+    },
+    {
+     "level": 8,
+     "price": 169.75,
+     "quantity": 390,
+     "orders": 4
+    },
+    {
+     "level": 9,
+     "price": 169.7,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 10,
+     "price": 169.65,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 11,
+     "price": 169.55,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 12,
+     "price": 169.5,
+     "quantity": 390,
+     "orders": 3
+    },
+    {
+     "level": 13,
+     "price": 169.45,
+     "quantity": 390,
+     "orders": 2
+    },
+    {
+     "level": 14,
+     "price": 169.4,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 15,
+     "price": 169.35,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 16,
+     "price": 169.25,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 17,
+     "price": 169.2,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 169.15,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 19,
+     "price": 169.05,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 169.0,
+     "quantity": 325,
+     "orders": 3
+    }
+   ],
+   "ask": [
+    {
+     "level": 1,
+     "price": 170.4,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 2,
+     "price": 170.45,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 3,
+     "price": 170.5,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 4,
+     "price": 170.55,
+     "quantity": 325,
+     "orders": 4
+    },
+    {
+     "level": 5,
+     "price": 170.6,
+     "quantity": 715,
+     "orders": 4
+    },
+    {
+     "level": 6,
+     "price": 170.65,
+     "quantity": 1235,
+     "orders": 10
+    },
+    {
+     "level": 7,
+     "price": 170.7,
+     "quantity": 1235,
+     "orders": 7
+    },
+    {
+     "level": 8,
+     "price": 170.75,
+     "quantity": 455,
+     "orders": 6
+    },
+    {
+     "level": 9,
+     "price": 170.8,
+     "quantity": 455,
+     "orders": 3
+    },
+    {
+     "level": 10,
+     "price": 170.85,
+     "quantity": 455,
+     "orders": 5
+    },
+    {
+     "level": 11,
+     "price": 170.9,
+     "quantity": 520,
+     "orders": 4
+    },
+    {
+     "level": 12,
+     "price": 170.95,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 13,
+     "price": 171.0,
+     "quantity": 585,
+     "orders": 5
+    },
+    {
+     "level": 14,
+     "price": 171.05,
+     "quantity": 195,
+     "orders": 2
+    },
+    {
+     "level": 15,
+     "price": 171.15,
+     "quantity": 130,
+     "orders": 1
+    },
+    {
+     "level": 16,
+     "price": 171.2,
+     "quantity": 325,
+     "orders": 2
+    },
+    {
+     "level": 17,
+     "price": 171.45,
+     "quantity": 325,
+     "orders": 1
+    },
+    {
+     "level": 18,
+     "price": 171.55,
+     "quantity": 65,
+     "orders": 1
+    },
+    {
+     "level": 19,
+     "price": 171.7,
+     "quantity": 130,
+     "orders": 2
+    },
+    {
+     "level": 20,
+     "price": 171.75,
+     "quantity": 65,
+     "orders": 1
+    }
+   ],
+   "last_price": 168.35,
+   "average_price": 162.63,
+   "buy_quantity": 1538680,
+   "sell_quantity": 178035,
+   "volume": 17990050,
+   "oi": 2062905,
+   "ohlc": {
+    "open": 125,
+    "close": 66.6,
+    "high": 194.9,
+    "low": 118.8
+   },
+   "quote_updated_at": "2026-09-24T10:35:01.281003+05:30",
+   "updated_at": "2026-09-24T10:35:10.373331+05:30",
+   "crossed_book": false
+  }
+ ],
+ "updated_at": "2026-09-24T10:35:10.373918+05:30",
+ "connection_count": 572,
+ "packet_count": 21096320,
+ "synthetic_data": false,
+ "storage": "RAM_ONLY",
+ "quote_refresh_seconds": 1.0
+}

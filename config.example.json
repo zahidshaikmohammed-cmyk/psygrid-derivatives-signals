@@ -1,0 +1,14 @@
+{
+  "poll_interval_seconds": 20,
+  "scoring": {
+    "signal_threshold": 75,
+    "watch_threshold": 62,
+    "min_independent_confirmations": 2
+  },
+  "session": {
+    "no_new_entries_after": "15:00"
+  },
+  "logging": {
+    "raw_snapshots": true
+  }
+}
