@@ -158,3 +158,75 @@ def test_live_signal_triggers_a_telegram_notification(monkeypatch):
 
     assert len(calls) == 1
     assert "NIFTY BUY CALL" in calls[0]["text"]
+
+
+def test_live_put_signal_triggers_a_telegram_notification(monkeypatch):
+    """Mirror of the CALL test above (sign=-1, same mirror-symmetry the
+    engine itself uses in test_scenarios.py's ``bear`` fixture) - proves
+    the accepted-signal -> Telegram boundary fires for BUY PUT too, not
+    just BUY CALL, using the real production decision path."""
+    monkeypatch.setenv("PSYGRID_TELEGRAM_BOT_TOKEN", "test-token")
+    monkeypatch.setenv("PSYGRID_TELEGRAM_CHAT_ID", "12345")
+    calls = []
+
+    def fake_post(url, json=None, timeout=None):
+        calls.append(json)
+        class R:
+            status_code = 200
+        return R()
+    monkeypatch.setattr("requests.post", fake_post)
+
+    cfg = load_config()
+    eng = PsygridEngine(cfg, indices=("NIFTY",))
+    notifier = TelegramNotifier()
+    sim = SimMarket(bull_breakout_path, sign=-1)
+    for _ in range(70):
+        raws, now, _, _ = sim.step_raws()
+        res = eng.cycle(raws, local_now=now)
+        run_engine.notify_new_signals(res, notifier)
+
+    assert len(calls) == 1
+    assert "NIFTY BUY PUT" in calls[0]["text"]
+
+
+def test_watch_and_no_trade_never_trigger_telegram_even_in_diagnostic_mode(monkeypatch):
+    """Phase 11 / final acceptance criteria: WATCH, NO_TRADE and the
+    --diagnostic near-miss trace must never reach Telegram - only a
+    genuinely accepted TradeReadySignal-equivalent (dec.signal) does.
+    Runs a scenario that produces WATCH/NO_TRADE with populated near-miss
+    traces (not just silence) and confirms zero Telegram calls throughout,
+    with --diagnostic rendering enabled (it only affects what the
+    terminal prints, never notify_new_signals' input)."""
+    from psygrid.monitor import Monitor
+
+    monkeypatch.setenv("PSYGRID_TELEGRAM_BOT_TOKEN", "test-token")
+    monkeypatch.setenv("PSYGRID_TELEGRAM_CHAT_ID", "12345")
+    calls = []
+
+    def fake_post(url, json=None, timeout=None):
+        calls.append(json)
+        class R:
+            status_code = 200
+        return R()
+    monkeypatch.setattr("requests.post", fake_post)
+
+    cfg = load_config()
+    eng = PsygridEngine(cfg, indices=("NIFTY",))
+    notifier = TelegramNotifier()
+    mon = Monitor(color=False, ascii_only=True, clear=False, diagnostic=True)
+    sim = SimMarket(bull_breakout_path, sign=1)
+    statuses = set()
+    saw_trace = False
+    for _ in range(50):  # stop before the breakout so it stays WATCH/NO_TRADE
+        raws, now, _, _ = sim.step_raws()
+        res = eng.cycle(raws, local_now=now)
+        mon.render(res, eng.recent_events)          # diagnostic rendering happens
+        run_engine.notify_new_signals(res, notifier)  # but never feeds Telegram
+        d = res.decisions["NIFTY"]
+        statuses.add(d.status)
+        if d.trace and d.trace.setup_detected:
+            saw_trace = True
+
+    assert saw_trace, "scenario never reached a diagnosable setup - test would prove nothing"
+    assert "BUY_CALL" not in statuses and "BUY_PUT" not in statuses
+    assert calls == []

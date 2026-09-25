@@ -19,6 +19,7 @@ from typing import Optional
 from .config import Config, INDICES
 from .data_integrity import GateResult, IntegrityGate
 from .depth_engine import DepthEngine, DepthState
+from .diagnostics import SignalEvaluationTrace, build_trace
 from .futures_engine import FuturesEngine, FuturesState
 from .indicator_engine import IndicatorEngine, IndicatorState
 from .level_engine import LevelEngine, LevelMap
@@ -71,6 +72,7 @@ class IndexDecision:
     best: Optional[Evaluated] = None
     candidates: list[str] = field(default_factory=list)
     coverage: dict = field(default_factory=dict)
+    trace: Optional[SignalEvaluationTrace] = None    # see diagnostics.py
 
 
 @dataclass
@@ -229,12 +231,14 @@ class IndexPipeline:
             dec.status = "SIGNAL_ACTIVE" if dec.active else "NO_TRADE"
             dec.headline = "SIGNAL ACTIVE" if dec.active else "NO TRADE"
             dec.reasons.append("no valid setup at a meaningful level")
+            dec.trace = build_trace(self.index, None, None, gate, self.cfg)
             return dec, events
 
         evaluated.sort(key=lambda e: -e.score.score)
         tradable = [e for e in evaluated if e.score.grade == "SIGNAL" and e.plan is not None]
         best = tradable[0] if tradable else evaluated[0]
         dec.best = best
+        dec.trace = build_trace(self.index, best.cand, best.score, gate, self.cfg, plan_error=best.plan_error)
         if tradable:
             signal = self._build_signal(best, gate, state, ref)
             ok, why, evs = state.consider(signal, ref)

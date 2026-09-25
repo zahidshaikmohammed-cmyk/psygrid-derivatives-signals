@@ -40,10 +40,12 @@ def configure_stdout() -> None:
 
 
 class Monitor:
-    def __init__(self, color: bool = True, ascii_only: bool = False, clear: bool = True, recent: int = 8):
+    def __init__(self, color: bool = True, ascii_only: bool = False, clear: bool = True, recent: int = 8,
+                 diagnostic: bool = False):
         self.color = color
         self.clear = clear
         self.recent = recent
+        self.diagnostic = diagnostic
         if ascii_only:
             self.sym = {"Y": "[+]", "N": "[x]", "~": "[~]", "-": "[-]", "rs": "Rs ", "major": "=",
                         "minor": "-", "dot": "*", "hr": "=", "sep": "-", "arrow": "<-", "to": "->"}
@@ -138,16 +140,56 @@ class Monitor:
             b = d.best
             out.append(self.c(f"WATCH — {b.cand.direction} candidate: {b.cand.setup} "
                               f"(quality {b.score.score:.0f}/100)", BOLD, YELLOW))
-            for r in d.reasons[:3]:
-                out.append(f"  not yet: {r}")
+            trace = self.trace_lines(d)
+            if trace:
+                out += trace
+            else:
+                for r in d.reasons[:3]:
+                    out.append(f"  not yet: {r}")
         elif d.status == "NO_TRADE":
             out.append(self.c("NO TRADE", BOLD))
-            for r in d.reasons[:2]:
-                out.append(f"  reason: {r}")
+            trace = self.trace_lines(d)
+            if trace:
+                out += trace
+            else:
+                for r in d.reasons[:2]:
+                    out.append(f"  reason: {r}")
         for w in d.waiting[:3]:
             out.append(f"  waiting for: {w}")
         for c in d.candidates[:3]:
             out.append(self.c(f"  candidate: {c}", DIM))
+        return out
+
+    def trace_lines(self, d: IndexDecision) -> list[str]:
+        """Renders IndexDecision.trace (diagnostics.py) so a repeated
+        NO_TRADE/WATCH is diagnosable ("genuinely no setup" vs "setup
+        detected, waiting on confirmation N/M, M points below threshold")
+        instead of only a single truncated reason string. Compact by
+        default; --diagnostic shows the full per-confirmation breakdown."""
+        t = d.trace
+        if t is None or not t.setup_detected:
+            return []
+        out = [f"  {t.direction} SETUP: {t.setup}   Score: {t.score:.0f}/100  Required: {t.signal_threshold:.0f}",
+               f"  Confirmations: {len(t.passing)}/{t.confirmations_required}"]
+        if self.diagnostic:
+            for c in t.confirmations:
+                mark = self.sym["Y"] if c.passed else self.sym["N"]
+                val = f"{c.value:+.2f}" if c.value is not None else "n/a"
+                out.append(f"  {mark} {c.label:<28} {val}  {c.detail[:60]}")
+        else:
+            if t.passing:
+                out.append("  PASS: " + ", ".join(t.passing))
+            if t.missing:
+                out.append("  MISSING: " + ", ".join(t.missing))
+        if t.blocking:
+            n = 3 if self.diagnostic else 2
+            out.append(self.c("  BLOCKING: " + "; ".join(t.blocking[:n]), DIM)[:200])
+        if t.conflicts:
+            out.append(self.c("  CONFLICTS: " + ", ".join(t.conflicts), YELLOW))
+        if not t.risk_pass and t.risk_reason:
+            out.append(self.c(f"  RISK BLOCKED: {t.risk_reason}"[:160], DIM))
+        if t.near_miss_points is not None:
+            out.append(self.c(f"  NEAR-MISS: {t.near_miss_points:.1f} points below threshold", YELLOW))
         return out
 
     def feed_lines(self, d: IndexDecision) -> list[str]:

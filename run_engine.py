@@ -89,6 +89,10 @@ def main(argv=None) -> int:
     ap.add_argument("--telegram-test", action="store_true",
                     help="send a Telegram test message using PSYGRID_TELEGRAM_BOT_TOKEN / "
                          "PSYGRID_TELEGRAM_CHAT_ID from the environment, then exit")
+    ap.add_argument("--diagnostic", action="store_true",
+                    help="show the full per-confirmation rejection trace for WATCH/NO_TRADE "
+                         "(why a near-miss setup didn't reach BUY CALL/PUT). Diagnosis only: "
+                         "never sends Telegram and never affects which signals are authorized.")
     args = ap.parse_args(argv)
 
     if args.telegram_test:
@@ -105,7 +109,8 @@ def main(argv=None) -> int:
     cfg = load_config(args.config)
     color = cfg["display"]["color"] and not args.no_color and sys.stdout.isatty() and enable_windows_ansi()
     mon = Monitor(color=color, ascii_only=args.ascii, clear=cfg["display"]["clear_screen"] and not args.no_clear
-                  and not args.replay and not args.once, recent=cfg["display"]["recent_events"])
+                  and not args.replay and not args.once, recent=cfg["display"]["recent_events"],
+                  diagnostic=args.diagnostic)
     logger = EngineLogger(cfg, Path(args.log_dir) if args.log_dir else None)
 
     if args.replay:

@@ -85,6 +85,30 @@ def test_terminal_render_contains_signal_fields(bull):
         assert needle in text
 
 
+def test_terminal_render_shows_confirmation_trace_before_signal(bull):
+    """Audit Phase 10: a repeated NO_TRADE/WATCH before the eventual BUY
+    CALL must be diagnosable (which confirmations passed/are missing, how
+    far the score is from threshold), not just a bare status string."""
+    _, out = bull
+    signal_i = next(i for i, (_, d, _) in enumerate(out) if d.signal)
+    traced = [d for _, d, _ in out[:signal_i] if d.trace and d.trace.setup_detected]
+    assert traced, "no diagnosable candidate before the eventual signal - test would prove nothing"
+    res = next(r for r, d, _ in out[:signal_i] if d.trace and d.trace.setup_detected)
+    text = Monitor(color=False, ascii_only=True).render(res, [])
+    assert "Confirmations:" in text
+    assert "PASS:" in text or "MISSING:" in text
+
+
+def test_diagnostic_mode_shows_full_per_confirmation_breakdown(bull):
+    _, out = bull
+    signal_i = next(i for i, (_, d, _) in enumerate(out) if d.signal)
+    res = next(r for r, d, _ in out[:signal_i] if d.trace and d.trace.setup_detected)
+    text = Monitor(color=False, ascii_only=True, diagnostic=True).render(res, [])
+    for label in ("Futures confirmation", "Option participation", "Depth confirmation",
+                  "Volume / participation expansion", "VWAP / indicators"):
+        assert label in text
+
+
 def test_chop_with_unavailable_confirmations_is_no_trade():
     _, out = run(SimMarket(chop_path, futures_ok=False, indicators_ok=False, flows=False), 90)
     assert not emitted(out)
