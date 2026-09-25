@@ -28,7 +28,8 @@ from psygrid.market_clock import IST, now_ist
 from psygrid.models import RawResponse
 from psygrid.monitor import Monitor, configure_stdout, enable_windows_ansi
 from psygrid.schema_adapter import parse_ts
-from psygrid.signal_engine import PsygridEngine
+from psygrid.signal_engine import CycleResult, PsygridEngine
+from psygrid.telegram_notifier import TelegramNotifier
 
 
 def load_replay_round(rdir: Path, cfg) -> tuple[dict, datetime]:
@@ -57,6 +58,24 @@ def load_replay_round(rdir: Path, cfg) -> tuple[dict, datetime]:
     return raws, max(fetched)
 
 
+def notify_new_signals(res: CycleResult, notifier: TelegramNotifier) -> None:
+    """Sends one Telegram message per index whose signal was newly accepted
+    this cycle. ``IndexDecision.signal`` is only non-None in the exact
+    cycle ``SignalStateManager.consider()`` returned ok=True for that
+    index (see signal_engine.py), so this already fires at most once per
+    accepted signal - no extra dedup needed here. Never allowed to affect
+    the engine: any unexpected error is swallowed, matching how
+    IndexPipeline.run() itself isolates a per-index failure."""
+    for dec in res.decisions.values():
+        if dec.signal is None:
+            continue
+        try:
+            notifier.notify_signal(dec.signal)
+        except Exception as exc:  # notification is never allowed to crash the engine
+            print(f"[telegram] unexpected error sending notification: {type(exc).__name__}: {exc}",
+                  file=sys.stderr)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="PSYGRID OPTIONS ENGINE v1.0 (signals only, no orders)")
     ap.add_argument("--config", help="JSON file overriding psygrid/config.py defaults")
@@ -67,7 +86,20 @@ def main(argv=None) -> int:
     ap.add_argument("--ascii", action="store_true", help="ASCII symbols only")
     ap.add_argument("--no-clear", action="store_true", help="do not clear the screen between cycles")
     ap.add_argument("--log-dir", help="log directory (default: logs)")
+    ap.add_argument("--telegram-test", action="store_true",
+                    help="send a Telegram test message using PSYGRID_TELEGRAM_BOT_TOKEN / "
+                         "PSYGRID_TELEGRAM_CHAT_ID from the environment, then exit")
     args = ap.parse_args(argv)
+
+    if args.telegram_test:
+        notifier = TelegramNotifier()
+        if not notifier.enabled:
+            print("Telegram notifications are not configured - set both PSYGRID_TELEGRAM_BOT_TOKEN "
+                  "and PSYGRID_TELEGRAM_CHAT_ID.", file=sys.stderr)
+            return 1
+        ok = notifier.send_test_message()
+        print("Test message sent." if ok else "Test message failed - see stderr for details.")
+        return 0 if ok else 1
 
     configure_stdout()
     cfg = load_config(args.config)
@@ -91,15 +123,19 @@ def main(argv=None) -> int:
 
     client = DataClient(cfg)
     eng = PsygridEngine(cfg, client=client, logger=logger)
+    notifier = TelegramNotifier()
     interval = args.interval or cfg["poll_interval_seconds"]
     logger.info(f"engine start, interval {interval}s")
     print(f"PSYGRID OPTIONS ENGINE v1.0 — monitoring {', '.join(INDICES)} every {interval:g}s "
           f"(READ-ONLY signal mode). Fetching…")
+    if notifier.enabled:
+        print("Telegram notifications: enabled.")
     try:
         while True:
             t0 = time.monotonic()
             res = eng.cycle()
             mon.show(res, eng.recent_events)
+            notify_new_signals(res, notifier)
             if args.once:
                 break
             time.sleep(max(1.0, interval - (time.monotonic() - t0)))

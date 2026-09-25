@@ -152,6 +152,28 @@ Unknown keys are rejected, so typos can't slip through. Settings you'll most lik
 **None of these thresholds were fitted to live or future data.** Calibrate them later from
 `logs/` on out-of-sample days.
 
+### Telegram notifications (optional)
+
+Set both environment variables to get a Telegram message whenever a signal is newly accepted
+(the same point the engine itself registers it — `BUY CALL` / `BUY PUT` in the terminal, not a
+`WATCH` or a repeat of an already-active signal):
+
+```powershell
+setx PSYGRID_TELEGRAM_BOT_TOKEN "your-bot-token-from-botfather"
+setx PSYGRID_TELEGRAM_CHAT_ID "your-chat-id"
+```
+
+Leave either unset to disable notifications entirely (the default) — the engine runs identically
+either way. Verify your credentials without starting the engine:
+
+```powershell
+python run_engine.py --telegram-test
+```
+
+This is a read-only, best-effort side channel (`psygrid/telegram_notifier.py`): a Telegram outage
+or bad token never blocks, delays, or crashes a poll cycle, and it never affects which signals are
+authorized.
+
 ---
 
 ## 6. Tests
