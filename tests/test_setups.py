@@ -78,6 +78,44 @@ def test_resistance_rejection_put():
     assert r.candidates[0].setup == "RESISTANCE REJECTION" and r.candidates[0].direction == "PUT"
 
 
+def test_chase_limited_failed_breakout_is_still_observable():
+    """Pre-scoring starvation audit: previously only ACCEPTED/RECLAIMED/
+    RETEST_HELD produced a 'no chasing' waiting message when the event was
+    chase-limited - a FAILED_BREAKOUT/FAILED_BREAKDOWN (or a bare REJECTED)
+    the level engine had genuinely detected vanished with zero trace: no
+    candidate, no rejected reason, no waiting message. The chase limit
+    itself (no candidate) is unchanged here; only its visibility is fixed."""
+    r = detect(23480, [zone(23500, "FAILED_BREAKOUT", "FAILED_BREAKOUT", "DOWN", break_extreme=23512)])
+    assert not r.candidates
+    assert any("no chasing" in w and "failed breakout" in w.lower() for w in r.waiting)
+
+
+def test_chase_limited_rejected_event_is_still_observable():
+    z = zone(23500, "REJECTED", "REJECTED", "DOWN", families=("SWING",), strength=50, tier=2)
+    r = detect(23480, [z], bars=last_bar(False))
+    assert not r.candidates
+    assert any("no chasing" in w and "rejected" in w.lower() for w in r.waiting)
+
+
+def test_bullish_liquidity_sweep_reclaim_and_bearish_mirror():
+    """Replay-fixture audit: LiquidityEngine's sweep detection was already
+    unit-tested (test_liquidity_futures_depth.py) for both directions, but
+    the setup_engine mapping from a SweepEvent to a LIQUIDITY SWEEP +
+    RECLAIM candidate had zero coverage anywhere - not even a unit test."""
+    bull_sweep = SweepEvent(direction="BULLISH", ref_price=23400, ref_label="swing low 23400",
+                            ref_zone_id=None, extreme=23390, sweep_ts=NOW - timedelta(minutes=1),
+                            confirm_ts=NOW - timedelta(seconds=30), age_bars=1)
+    bear_sweep = SweepEvent(direction="BEARISH", ref_price=23400, ref_label="swing high 23400",
+                            ref_zone_id=None, extreme=23410, sweep_ts=NOW - timedelta(minutes=1),
+                            confirm_ts=NOW - timedelta(seconds=30), age_bars=1)
+    call = detect(23405, [], sweeps=[bull_sweep])
+    put = detect(23395, [], sweeps=[bear_sweep])
+    assert call.candidates[0].setup == "LIQUIDITY SWEEP + RECLAIM" and call.candidates[0].direction == "CALL"
+    assert call.candidates[0].invalidation < 23390
+    assert put.candidates[0].setup == "LIQUIDITY SWEEP + RECLAIM" and put.candidates[0].direction == "PUT"
+    assert put.candidates[0].invalidation > 23410
+
+
 def test_multi_factor_level_reaction():
     z = zone(23400, "REJECTED", "REJECTED", "UP", families=("SWING", "PREV_DAY", "OPTIONS"), strength=85)
     r = detect(23410, [z])

@@ -111,9 +111,16 @@ class SetupEngine:
                 continue
             ext = z.distance(price)
             if ext > self.c["max_chase_ranges"] * rng:
-                if ev.event in ("ACCEPTED", "RECLAIMED", "RETEST_HELD"):
-                    res.waiting.append(f"{z.center:,.0f} {ev.event.lower().replace('_', ' ')} but price extended "
-                                       f"{ext:.0f} pts — waiting for RETEST (no chasing)")
+                # Pre-scoring starvation audit: every event kind here must be
+                # observable when chase-limited, not just ACCEPTED/RECLAIMED/
+                # RETEST_HELD - a level engine that HAS detected e.g. a
+                # FAILED_BREAKOUT must never disappear with zero trace (no
+                # waiting message, no rejected message, no SetupCandidate at
+                # all) just because price has since moved further. The gate
+                # itself (no chasing) is unchanged; this only makes the
+                # rejection visible.
+                res.waiting.append(f"{z.center:,.0f} {ev.event.lower().replace('_', ' ')} but price extended "
+                                   f"{ext:.0f} pts — waiting for RETEST (no chasing)")
                 continue
             edge_inv = (z.low - buf) if sign > 0 else (z.high + buf)
 

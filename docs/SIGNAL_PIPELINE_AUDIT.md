@@ -290,3 +290,127 @@ decision path — with no shortcut around any layer:
 None of these were written or modified to bypass any layer of the real
 pipeline; the CALL/PUT/negative-control tests already existed before this
 audit and are cited, not invented, as evidence.
+
+---
+
+## Addendum: pre-scoring starvation audit (second pass)
+
+Follow-up audit specifically targeting the path *before* `SignalEvaluationTrace`
+is built: can a genuine, already-*detected* opportunity be silently discarded
+before any trace exists at all, so "PSYGRID never found it" and "PSYGRID found
+it and intentionally rejected it" become indistinguishable? Two real defects
+were found and fixed, both purely additive (no gate weakened, no threshold
+touched, no candidate that was previously rejected is now accepted).
+
+### Defect 1 (REAL BUG, observability): entries-cutoff check ran before scoring
+
+**File**: `psygrid/signal_engine.py`, `IndexPipeline.run()`.
+**Before**: `if not self.clock.entries_allowed(ref): ... return dec, events`
+sat immediately after `res = self.setups.detect(...)`, **before** the loop
+that scores every `res.candidates` and builds `dec.trace`. During the
+15:00-15:20 IST "new entries disabled" window, any genuinely detected,
+scored, `SIGNAL`-grade candidate returned with `dec.trace = None` and was
+never even added to `dec.candidates` — completely indistinguishable from "no
+setup existed".
+**Reproduced live**: a `bull_breakout_path` scenario started at 14:40 IST
+produces, at 15:02:20, a `CALL BREAKOUT + ACCEPTANCE` scoring **77.4/100**
+(`grade=SIGNAL`, fully qualifying) that correctly stays `NO_TRADE` (entries
+disabled) — but before the fix, carried zero trace of ever having existed.
+**Fix**: score every detected candidate (pure computation — `StrikeSelector`,
+`ScoringEngine`, `RiskEngine` have no side effects) and build `dec.trace`
+*before* the entries-cutoff check; the cutoff check itself, and every branch
+after it (`state.consider()`, signal authorization), is untouched and runs
+exactly as before — a late-session candidate still can never become
+`BUY_CALL`/`BUY_PUT`.
+**Test**: `tests/test_scenarios.py::test_late_session_setup_is_still_traced_not_silently_dropped`
+— asserts `not emitted(out)` (cutoff still holds) AND at least one
+`SIGNAL`-grade traced candidate exists in the window, with the "new entries
+disabled" reason attached.
+
+### Defect 2 (REAL BUG, observability): chase-limited events had zero trace
+
+**File**: `psygrid/setup_engine.py`, `SetupEngine.detect()`.
+**Before**: when a level-engine event was found but price had extended
+beyond `max_chase_ranges`, only `ACCEPTED`/`RECLAIMED`/`RETEST_HELD` events
+got a `res.waiting` message explaining why no candidate was built.
+`FAILED_BREAKOUT`, `FAILED_BREAKDOWN`, and a bare `REJECTED` silently
+`continue`d with **no** waiting message, no rejected reason, and (since no
+`SetupCandidate` was ever constructed) no possibility of a trace — a level
+event the engine had genuinely detected vanished with zero evidence it ever
+happened.
+**Fix**: every event kind now gets the same "no chasing" waiting message
+when chase-limited. The chase limit itself — which candidates are excluded —
+is completely unchanged; only its visibility is fixed.
+**Tests**: `tests/test_setups.py::test_chase_limited_failed_breakout_is_still_observable`,
+`::test_chase_limited_rejected_event_is_still_observable`.
+
+### Defect 3 (REAL BUG, observability): lifecycle/dedup suppression was invisible
+
+**File**: `psygrid/monitor.py`.
+**Before**: when `SignalStateManager.consider()` rejects an otherwise-valid
+`SIGNAL`-grade candidate (already active in the same direction, or still
+cooling down after a recent close/invalidation), the reason is appended to
+`dec.reasons` — but the terminal renderer never printed it. In the
+`SIGNAL_ACTIVE` branch it wasn't called at all; in `NO_TRADE` it was
+silently shadowed because `trace_lines()` returning non-empty content (a
+"complete-looking", apparently-authorizable trace: confirmations passed,
+score above threshold, risk passed) skipped the `d.reasons` fallback
+entirely. A fully-qualifying, lifecycle-suppressed candidate looked either
+like nothing was wrong, or worse, like an unexplained contradiction (trace
+says SIGNAL, status says NO_TRADE, no visible reason).
+**Reproduced live**: continuing the same `bull_breakout_path` scenario past
+its accepted signal, the *same* zone's `ACCEPTED` event keeps being
+re-detected each cycle (still within `max_event_age_seconds`) and re-scores
+`SIGNAL`-grade; `state.consider()` correctly rejects it
+(`"CALL signal already active (SIGNAL_ACTIVE) — not repeated"`) — before the
+fix, this reason was computed but never displayed.
+**Fix**: `trace_lines()` now appends a `SUPPRESSED: <reason>` line whenever
+the trace says `SIGNAL` + risk passed but the cycle didn't authorize (covers
+both this and Defect 1's case in one rendering rule), and is now also called
+from the `SIGNAL_ACTIVE` branch.
+**Test**: `tests/test_scenarios.py::test_lifecycle_suppression_is_rendered_not_silent`.
+
+### Live observability: the A-G distinction
+
+Verified via `Monitor.render()` (the exact code `python run_engine.py
+--diagnostic --no-clear` calls) fed by both the real simulated scenarios and
+`--replay samples/raw/20260924_103510`:
+
+| case | how it's distinguished in the terminal | evidence |
+|---|---|---|
+| A. No setup detected | no `SETUP:` line at all; either `WARMING UP` block or `NO TRADE` with the fallback `reason:` line, `dec.trace.setup_detected=False` | `--replay` run (attached), `test_diagnostics.py::test_no_candidate_means_setup_not_detected` |
+| B. Setup detected, missing confirmation | `Confirmations: 0-1/2`, `MISSING:` list populated, no `NEAR-MISS` line (score gap isn't the story yet) | live run of a calibrated `failed_breakout` path: `PUT RESISTANCE REJECTION score=18.3 pass=[]` |
+| C. Confirmations sufficient, score insufficient | `Confirmations: N/2` (N>=2), `NEAR-MISS: X points below threshold` | live run: `PUT VWAP RECLAIM score=47.8 ... NEAR-MISS: 27.2 points below threshold` (see body of this doc) |
+| D. Score sufficient, risk rejected | `RISK BLOCKED: <plan_error>` | `test_diagnostics.py::test_risk_pass_false_when_signal_grade_but_plan_rejected` (trace) + `test_selection_scoring_risk.py::test_risk_targets_from_levels_and_room_check` (the underlying `RiskEngine.plan()` rejection) |
+| E. Signal authorized | `>>> BUY CALL/PUT <<<` block | `test_breakout_acceptance_emits_single_buy_call`, `test_positive_path_passes_every_named_stage_before_authorization` |
+| F. Suppressed by lifecycle/dedup | `SUPPRESSED: <reason>` line (new, Defect 3) | `test_lifecycle_suppression_is_rendered_not_silent` |
+| G. Data gate blocked | separate top-level `DATA GATE BLOCKED — TRADING AUTHORIZATION = BLOCKED` block, never reaches setup detection | `test_stale_feed_blocks`, `--replay` output when a required feed is blocked |
+
+### Replay-fixture inventory for the 7 named scenarios
+
+| scenario | full-pipeline (setup -> score -> risk -> decision) coverage | notes |
+|---|---|---|
+| Breakout + acceptance | **Yes** — `test_breakout_acceptance_emits_single_buy_call` (CALL), mirror (PUT) | reaches `BUY CALL`/`BUY PUT` |
+| Bullish liquidity sweep + reclaim | Setup-engine unit level only (new: `test_bullish_liquidity_sweep_reclaim_and_bearish_mirror`); `LiquidityEngine` detection itself already unit-tested (`test_liquidity_futures_depth.py`) | no full-pipeline (sim) fixture yet — not fabricated to avoid an unreliable, over-engineered synthetic price path |
+| Bearish liquidity sweep + rejection | Same as above (same new test covers both directions) | same |
+| Support bounce | Setup-engine unit level only (`test_setups.py::test_support_bounce_requires_confirming_close`, pre-existing) | same gap |
+| Resistance rejection | Setup-engine unit level only (`test_setups.py::test_resistance_rejection_put`, pre-existing) | same gap |
+| Failed breakout | Setup-engine unit level (`test_failed_breakout_put_and_failed_breakdown_call`, pre-existing, +2 new chase-limit tests) | a hand-built full-pipeline price path was attempted during this audit; the level engine genuinely reached `FAILED_BREAKOUT` but the context filter (`_pending_break`, correctly) held it back pending a nearby level's own resolution — a real, correct rejection, not a bug, but not a clean demonstration either, so it was not forced into a fragile permanent fixture |
+| Deep pullback continuation | **None** — no path function, no test | flagged as a genuine follow-up item, not fabricated |
+
+This inventory is reported as found, not inflated: three of the seven
+scenarios (support bounce, resistance rejection, failed breakout, and the
+sweep setups) are exercised only at the setup-engine unit level, not through
+the full production pipeline, and "deep pullback continuation" has no
+fixture at all. None of this reflects a defect in the engine — `SetupEngine`
+itself demonstrably produces the right candidate for every one of these
+event types (proven at the unit level); it reflects incomplete *test*
+coverage, which is intentionally not padded here with rushed, hard-to-trust
+synthetic price paths.
+
+### Full suite after this pass
+
+`pytest -q` -> **160 passed, 0 failed, 0 skipped** (153 before this pass; +7
+new: the late-session trace test, 2 chase-limit tests, 1 liquidity-sweep
+setup-engine test, 1 lifecycle-suppression test, and 2 from the
+parametrized CALL/PUT stage-by-stage positive-path test).

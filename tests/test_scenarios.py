@@ -70,6 +70,48 @@ def test_mirror_scenario_emits_buy_put_with_same_quality(bull, bear):
     assert (b.t1 - b.underlying) == pytest.approx(p.underlying - p.t1, abs=0.01)
 
 
+@pytest.mark.parametrize("fixture_name,direction,option_type", [("bull", "CALL", "CE"), ("bear", "PUT", "PE")])
+def test_positive_path_passes_every_named_stage_before_authorization(fixture_name, direction, option_type,
+                                                                      request):
+    """Explicit stage-by-stage proof (not just the final Signal) that a
+    realistic opportunity genuinely reaches: setup detected -> confirmation
+    generated -> score -> risk -> BUY CALL/PUT, through the unmodified
+    production path, for BOTH directions."""
+    _, out = request.getfixturevalue(fixture_name)
+    signal_i = next(i for i, (_, d, _) in enumerate(out) if d.signal)
+    d = out[signal_i][1]
+
+    assert d.trace is not None and d.trace.setup_detected             # setup detected
+    assert d.trace.direction == direction
+    assert len(d.trace.passing) >= d.trace.confirmations_required     # confirmation generated
+    assert not d.trace.conflicts
+    assert d.trace.score >= d.trace.signal_threshold                  # score
+    assert d.trace.grade == "SIGNAL"
+    assert d.trace.risk_pass                                          # risk
+    assert d.best is not None and d.best.plan is not None
+    assert d.status == f"BUY_{direction}"                             # authorized
+    assert d.signal is not None and d.signal.option_type == option_type
+
+
+def test_lifecycle_suppression_is_rendered_not_silent(bull):
+    """Pre-scoring starvation audit, live-observability requirement F:
+    once a signal is active, the setup engine keeps re-detecting the same
+    zone's ACCEPTED event each cycle (it's still within max_event_age) and
+    the candidate still scores SIGNAL-grade - state.consider() correctly
+    suppresses it as a duplicate ("already active"), but the terminal must
+    say so, not render a trace that looks identical to "nothing found"."""
+    _, out = bull
+    signal_i = next(i for i, (_, d, _) in enumerate(out) if d.signal)
+    suppressed = [(r, d) for r, d, _ in out[signal_i + 1:]
+                 if d.status == "SIGNAL_ACTIVE" and d.signal is None
+                 and d.trace and d.trace.grade == "SIGNAL"]
+    assert suppressed, "scenario never re-detected the same setup after the signal - test would prove nothing"
+    res, d = suppressed[0]
+    assert any("already active" in r for r in d.reasons)
+    text = Monitor(color=False, ascii_only=True).render(res, [])
+    assert "SUPPRESSED:" in text and "already active" in text
+
+
 def test_target_event_after_signal(bull):
     eng, out = bull
     events = [e.event for res, _, _ in out for e in res.events]
@@ -151,6 +193,27 @@ def test_no_new_entries_late_session():
     late = [d for r, d, _ in out if r.ref_time.hour == 15 and d.status not in ("WARMING_UP",)]
     assert late and all("new entries disabled" in " ".join(d.reasons) or d.status == "MARKET_CLOSED"
                         for d in late)
+
+
+def test_late_session_setup_is_still_traced_not_silently_dropped():
+    """Pre-scoring starvation audit: a SIGNAL-grade candidate detected
+    during the 15:00-15:20 entry-cutoff window must still be scored and
+    traced (IndexDecision.trace) even though it can never be authorized -
+    otherwise "found but intentionally rejected" is indistinguishable from
+    "never found" (see docs/SIGNAL_PIPELINE_AUDIT.md). The suppression
+    itself must be unaffected: status/signal must never become BUY_*."""
+    sim = SimMarket(bull_breakout_path, start=datetime(2026, 9, 24, 14, 40, tzinfo=IST))
+    _, out = run(sim, 70)
+    assert not emitted(out)  # entry cutoff must still hold - nothing authorized
+
+    traced_signal_grade = [d for _, d, _ in out
+                           if d.trace and d.trace.setup_detected and d.trace.grade == "SIGNAL"]
+    assert traced_signal_grade, ("scenario never produced a SIGNAL-grade candidate during the cutoff "
+                                 "window - test would prove nothing")
+    for d in traced_signal_grade:
+        assert d.status in ("NO_TRADE", "SIGNAL_ACTIVE")   # correctly suppressed, not authorized
+        assert d.trace.direction == "CALL" and d.trace.setup == "BREAKOUT + ACCEPTANCE"
+        assert any("new entries disabled" in r for r in d.reasons)
 
 
 def test_futures_unavailable_lowers_quality():

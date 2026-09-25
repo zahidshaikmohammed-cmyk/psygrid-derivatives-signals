@@ -136,6 +136,7 @@ class Monitor:
             out.append(self.c(f"SIGNAL ACTIVE: BUY {a.direction} {a.strike:,.0f} {a.option_type} — {a.state}", BOLD, col))
             out.append(f"  since {a.created:%H:%M:%S}  stop {a.stop:,.2f}  T1 {a.t1:,.2f}  T2 {a.t2:,.2f}"
                        f"  Q{a.score:.0f}")
+            out += self.trace_lines(d)
         elif d.status == "WATCH" and d.best:
             b = d.best
             out.append(self.c(f"WATCH — {b.cand.direction} candidate: {b.cand.setup} "
@@ -190,6 +191,14 @@ class Monitor:
             out.append(self.c(f"  RISK BLOCKED: {t.risk_reason}"[:160], DIM))
         if t.near_miss_points is not None:
             out.append(self.c(f"  NEAR-MISS: {t.near_miss_points:.1f} points below threshold", YELLOW))
+        if t.grade == "SIGNAL" and t.risk_pass and d.status not in ("BUY_CALL", "BUY_PUT", "WATCH"):
+            # Score AND risk both said yes, yet the cycle didn't authorize -
+            # the real reason (session-phase entry cutoff, or lifecycle
+            # dedup/cooldown) lives only in d.reasons, never in the trace
+            # itself. Without this, a fully-qualifying candidate suppressed
+            # downstream of scoring looked identical to "nothing found".
+            for r in d.reasons:
+                out.append(self.c(f"  SUPPRESSED: {r}", YELLOW))
         return out
 
     def feed_lines(self, d: IndexDecision) -> list[str]:

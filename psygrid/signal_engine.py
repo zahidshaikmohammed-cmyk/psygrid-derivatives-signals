@@ -209,10 +209,6 @@ class IndexPipeline:
         res = self.setups.detect(price, ref, st, lm, liq, bars1)
         dec.waiting = res.waiting
         dec.candidates = list(res.rejected)
-        if not self.clock.entries_allowed(ref):
-            dec.status, dec.headline = ("SIGNAL_ACTIVE", "SIGNAL ACTIVE") if dec.active else ("NO_TRADE", "NO TRADE")
-            dec.reasons.append(f"{phase}: new entries disabled")
-            return dec, events
 
         evaluated: list[Evaluated] = []
         done = [b for b in bars1 if b.complete]
@@ -227,18 +223,39 @@ class IndexPipeline:
             dec.candidates.append(f"{c.direction} {c.setup} @ {c.level_price:,.0f}: Q{score.score:.0f} "
                                   f"{score.grade}" + (f" ({'; '.join(score.reasons)})" if score.reasons else "")
                                   + (f" [risk: {err}]" if plan is None else ""))
+
+        # Score/risk every detected candidate - and build its trace - BEFORE
+        # the entry-cutoff check below, even though a candidate found during
+        # LATE session can never be authorized. Otherwise a genuinely
+        # detected, scored setup found in the 15:00-15:20 window would
+        # return with dec.trace=None, indistinguishable from "nothing was
+        # found" (see docs/SIGNAL_PIPELINE_AUDIT.md's pre-scoring starvation
+        # audit). This is pure computation with no side effects - it never
+        # calls state.consider()/_build_signal(), so it cannot authorize or
+        # register a signal; only the entries_allowed check below decides
+        # that, exactly as before.
+        tradable: list[Evaluated] = []
+        best: Optional[Evaluated] = None
+        if evaluated:
+            evaluated.sort(key=lambda e: -e.score.score)
+            tradable = [e for e in evaluated if e.score.grade == "SIGNAL" and e.plan is not None]
+            best = tradable[0] if tradable else evaluated[0]
+            dec.best = best
+            dec.trace = build_trace(self.index, best.cand, best.score, gate, self.cfg, plan_error=best.plan_error)
+        else:
+            dec.trace = build_trace(self.index, None, None, gate, self.cfg)
+
+        if not self.clock.entries_allowed(ref):
+            dec.status, dec.headline = ("SIGNAL_ACTIVE", "SIGNAL ACTIVE") if dec.active else ("NO_TRADE", "NO TRADE")
+            dec.reasons.append(f"{phase}: new entries disabled")
+            return dec, events
+
         if not evaluated:
             dec.status = "SIGNAL_ACTIVE" if dec.active else "NO_TRADE"
             dec.headline = "SIGNAL ACTIVE" if dec.active else "NO TRADE"
             dec.reasons.append("no valid setup at a meaningful level")
-            dec.trace = build_trace(self.index, None, None, gate, self.cfg)
             return dec, events
 
-        evaluated.sort(key=lambda e: -e.score.score)
-        tradable = [e for e in evaluated if e.score.grade == "SIGNAL" and e.plan is not None]
-        best = tradable[0] if tradable else evaluated[0]
-        dec.best = best
-        dec.trace = build_trace(self.index, best.cand, best.score, gate, self.cfg, plan_error=best.plan_error)
         if tradable:
             signal = self._build_signal(best, gate, state, ref)
             ok, why, evs = state.consider(signal, ref)
