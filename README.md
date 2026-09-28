@@ -142,7 +142,8 @@ Unknown keys are rejected, so typos can't slip through. Settings you'll most lik
 | `scoring.weights.*` | see file | component weights |
 | `levels.weights.*`, `levels.tier1_min_strength` | see file | level-strength model |
 | `levels.acceptance_closes` | 3 | 1m closes beyond a level for ACCEPTED |
-| `setups.min_room_ranges` | 3.0 | minimum room to the next major opposing level |
+| `setups.min_room_ranges` | 1.0 | floor (in avg ranges) for the room to the next major opposing level; the room a setup needs is `max(floor, risk.min_reward_risk × its own risk)` |
+| `risk.target_min_strength` | 50 | tier-2 levels weaker than this are ignored as targets / room limits |
 | `setups.max_chase_ranges` | 2.5 | no chasing beyond this distance from the level |
 | `integrity.max_age_seconds.*` | 20–30 s | staleness limits per feed |
 | `integrity.accepted_feed_status.*` | LIVE / OK | payload statuses accepted (fail-closed) |

@@ -129,7 +129,10 @@ DEFAULTS: dict[str, Any] = {
     "setups": {
         "max_event_age_seconds": 360,
         "max_chase_ranges": 2.5,       # do not chase further than k * avg range
-        "min_room_ranges": 3.0,        # room to the next opposing major level
+        # room to the next unbroken major opposing level: it only blocks a setup
+        # when it sits closer than risk.min_reward_risk x the setup's own risk
+        # (price -> invalidation), with this many avg ranges as a floor
+        "min_room_ranges": 1.0,
         "vwap_hold_closes": 2,
         "vwap_touch_ranges": 0.5,
         "invalidation_buffer_ranges": 0.35,
@@ -185,6 +188,9 @@ DEFAULTS: dict[str, Any] = {
     "risk": {
         "entry_band_pct": 2.0,
         "min_reward_risk": 1.2,
+        # a level is only used as a target / room limit when it is tier 1 or at
+        # least this strong; weak tier-2 zones in a dense level map are skipped
+        "target_min_strength": 50,
         "r_multiple_t1": 1.5,
         "r_multiple_t2": 2.5,
         "tick": 0.05,

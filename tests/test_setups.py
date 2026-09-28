@@ -146,6 +146,17 @@ def test_call_blocked_directly_under_major_resistance():
     assert any("MAJOR RESISTANCE" in w and "BREAKOUT + ACCEPTANCE" in w for w in r.waiting)
 
 
+def test_major_level_beyond_reward_risk_room_does_not_block():
+    # risk ~9.75 pts, so a major resistance 12 pts away still leaves 1.2R of room
+    acc = zone(23500, "ACCEPTED", "ACCEPTED", "UP", accepted_dir="UP")
+    res = zone(23520, "APPROACHING", "APPROACHING", None, tier=1, strength=90)
+    r = detect(23506, [acc, res])
+    assert [(c.direction, c.setup) for c in r.candidates] == [("CALL", "BREAKOUT + ACCEPTANCE")]
+    # the same resistance inside 1.2R still blocks
+    res_close = zone(23514, "APPROACHING", "APPROACHING", None, tier=1, strength=90)
+    assert not detect(23506, [acc, res_close]).candidates
+
+
 def test_wait_for_acceptance_while_break_pending():
     pending = zone(23500, "BROKEN", "BROKEN", "UP", break_dir="UP")
     s = st(trend="UP", momentum=2.0, expansion=True,

@@ -80,6 +80,7 @@ def _dir(sign: int) -> str:
 class SetupEngine:
     def __init__(self, cfg: Config):
         self.c = cfg["setups"]
+        self.min_rr = cfg["risk"]["min_reward_risk"]
 
     def detect(self, price: float, now: datetime, st: StructureState, lm: LevelMap,
                liq: LiquidityState, bars: list[Candle]) -> SetupResult:
@@ -208,11 +209,13 @@ class SetupEngine:
                                       level_price=sw[-1].price))
 
         # ---- context filter: never buy straight into an unbroken major opposing level
-        room = self.c["min_room_ranges"] * rng
+        floor = self.c["min_room_ranges"] * rng
         for c in cands:
             if (c.invalidation - price) * c.sign >= 0:
                 res.rejected.append(f"{c.direction} {c.setup}: invalidation on wrong side of price")
                 continue
+            # the room a setup needs scales with its own risk, not a fixed multiple
+            room = max(floor, self.min_rr * (price - c.invalidation) * c.sign)
             pending = self._pending_break(lm, price, c, room)
             if pending is not None:
                 res.rejected.append(f"{c.direction} {c.setup} held back: break of {pending.center:,.0f} not accepted")

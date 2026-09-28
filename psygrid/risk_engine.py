@@ -67,7 +67,9 @@ class RiskEngine:
         risk = (price - cand.invalidation) * d
         if risk <= 0:
             return None, "invalidation not on the protective side of price"
-        opp = [z for z in lm.zones if z.tier <= 2 and z.id != (cand.key_zone.id if cand.key_zone else None)]
+        min_strength = self.c["target_min_strength"]
+        opp = [z for z in lm.zones if (z.tier == 1 or (z.tier == 2 and z.strength >= min_strength))
+               and z.id != (cand.key_zone.id if cand.key_zone else None)]
         if d > 0:
             ahead = sorted((z.low for z in opp if z.low > price), key=float)
         else:

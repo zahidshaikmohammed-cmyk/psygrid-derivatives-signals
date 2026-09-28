@@ -112,6 +112,15 @@ def test_risk_targets_from_levels_and_room_check():
     assert plan is None and "insufficient room" in err
 
 
+def test_weak_tier2_level_is_not_a_target_or_room_limit():
+    sel = _sel()
+    cand = SetupCandidate("CALL", "BREAKOUT + ACCEPTANCE", None, 23220, 23210, 0.8, "x")
+    weak = Zone(id="W", low=23240, high=23245, center=23242, tier=2, strength=29)
+    strong = Zone(id="R1", low=23300, high=23305, center=23302, tier=1, strength=80)
+    plan, err = RiskEngine(load_config()).plan(cand, sel, LevelMap([weak, strong], 23230), 23230, 200)
+    assert plan and plan.underlying_t1 == 23300, err
+
+
 def test_risk_r_multiples_when_no_levels_and_put_symmetry():
     sel = _sel()
     call = SetupCandidate("CALL", "MOMENTUM CONTINUATION", None, 0, 23210, 0.7, "x")
