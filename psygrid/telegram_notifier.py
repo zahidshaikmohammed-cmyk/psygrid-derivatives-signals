@@ -79,8 +79,15 @@ class TelegramNotifier:
             f"R:R: {sig.reward_risk:.2f}",
             f"Underlying: {sig.underlying:,.2f} ({sig.underlying_source})  "
             f"Level: {sig.level_type} @ {sig.key_level_price:,.2f}",
-            "Signal-only - no order has been placed.",
         ]
+        if None not in (sig.option_invalidation, sig.option_t1, sig.option_t2):
+            lines.append(f"Premium SL: ~{sig.option_invalidation:.2f}  T1: ~{sig.option_t1:.2f}  "
+                         f"T2: ~{sig.option_t2:.2f}")
+            lines.append("(estimated from delta/gamma; ignores time decay & IV - "
+                         "the underlying levels above are the real triggers)")
+        else:
+            lines.append("Premium SL/T1/T2: unavailable (no option greeks) - use the underlying levels")
+        lines.append("Signal-only - no order has been placed.")
         return self._send("\n".join(lines))
 
     # Lifecycle events worth a message. INVALIDATED and TARGET_2 are always

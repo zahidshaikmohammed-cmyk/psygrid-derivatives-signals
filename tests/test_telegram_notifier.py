@@ -147,3 +147,21 @@ def test_notify_event_target1_and_skips_other_kinds(monkeypatch):
     sent = [n.notify_event(e) for e in ev]
     assert [e.event for e in ev] == ["INVALIDATED", "CLOSED"] and sent == [False, True]
     assert "CLOSED: invalidated" in calls[-1]["json"]["text"]
+
+
+def test_notify_signal_includes_estimated_premium_levels(monkeypatch):
+    calls = []
+    n = _enabled_notifier(monkeypatch, _fake_poster(calls))
+    s = sig("PUT", strike=22800.0)
+    s.option_invalidation, s.option_t1, s.option_t2 = 49.05, 86.1, 101.4
+    n.notify_signal(s)
+    text = calls[0]["json"]["text"]
+    assert "Premium SL: ~49.05  T1: ~86.10  T2: ~101.40" in text
+    assert text.endswith("Signal-only - no order has been placed.")
+
+
+def test_notify_signal_without_greeks_says_premium_levels_unavailable(monkeypatch):
+    calls = []
+    n = _enabled_notifier(monkeypatch, _fake_poster(calls))
+    n.notify_signal(sig())  # option_* are None
+    assert "Premium SL/T1/T2: unavailable" in calls[0]["json"]["text"]
