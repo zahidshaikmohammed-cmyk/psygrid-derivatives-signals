@@ -72,3 +72,22 @@ def test_time_stop_and_session_close():
     m.consider(sig(setup="OTHER"), T0 + timedelta(minutes=50))
     ev = m.track("NIFTY", 23225, T0 + timedelta(minutes=51), True)
     assert ev[-1].event == "CLOSED" and "session close" in ev[-1].text
+
+
+def test_events_carry_option_ltp_and_pnl():
+    m = SignalStateManager(load_config())
+    m.consider(sig(), T0)  # emitted at option LTP 100
+    ev = m.track("NIFTY", 23262, T0 + timedelta(minutes=2), False, option_ltp=lambda s: 118.5)
+    assert ev[0].event == "TARGET_1" and ev[0].pnl == 18.5 and ev[0].pnl_pct == 18.5
+    assert ev[0].underlying == 23262 and "+18.50" in ev[0].text
+    # no quote this cycle: the last observed LTP is used for the time stop
+    ev = m.track("NIFTY", 23240, T0 + timedelta(minutes=41), False, option_ltp=lambda s: None)
+    assert ev[-1].event == "CLOSED" and "time stop" in ev[-1].text
+    assert ev[-1].option_ltp == 118.5 and ev[-1].pnl == 18.5
+
+
+def test_close_without_any_quote_has_no_pnl():
+    m = SignalStateManager(load_config())
+    m.consider(sig(), T0)
+    ev = m.track("NIFTY", 23225, T0 + timedelta(minutes=41), False)
+    assert ev[-1].pnl is None and "[" not in ev[-1].text

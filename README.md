@@ -157,7 +157,9 @@ Unknown keys are rejected, so typos can't slip through. Settings you'll most lik
 
 Set both environment variables to get a Telegram message whenever a signal is newly accepted
 (the same point the engine itself registers it — `BUY CALL` / `BUY PUT` in the terminal, not a
-`WATCH` or a repeat of an already-active signal):
+`WATCH` or a repeat of an already-active signal). Each signal also gets follow-up messages: when
+T1 is hit, and when it is closed (final target, invalidation, time stop, opposing signal or
+session close), each with the contract's option LTP and P&L versus the LTP at the signal:
 
 ```powershell
 setx PSYGRID_TELEGRAM_BOT_TOKEN "your-bot-token-from-botfather"

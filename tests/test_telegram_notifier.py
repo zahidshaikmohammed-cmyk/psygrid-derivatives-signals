@@ -109,3 +109,41 @@ def test_network_exception_never_raises_and_returns_false(monkeypatch):
 def test_unexpected_poster_exception_never_raises_and_returns_false(monkeypatch):
     notifier = _enabled_notifier(monkeypatch, _raising_poster(RuntimeError("boom")))
     assert notifier.notify_signal(sig()) is False
+
+
+def _events_for_time_stop(ltp):
+    from datetime import timedelta
+    from psygrid.config import load_config
+    from psygrid.signal_state import SignalStateManager
+    m = SignalStateManager(load_config())
+    m.consider(sig("PUT", strike=22800.0), T0)
+    return m.track("NIFTY", 23225, T0 + timedelta(minutes=41), False, option_ltp=lambda s: ltp)
+
+
+def test_notify_event_time_stop_with_pnl(monkeypatch):
+    calls = []
+    n = _enabled_notifier(monkeypatch, _fake_poster(calls))
+    ev = _events_for_time_stop(92.0)[-1]
+    assert n.notify_event(ev) is True
+    text = calls[0]["json"]["text"]
+    assert text.startswith("NIFTY PUT 22,800 PE - CLOSED: time stop (40 min)")
+    assert "Option LTP: 92.00 (signal 100.00)  P&L: -8.00 pts (-8.0%)" in text
+    assert "Underlying: 23,225.00" in text and "no order has been placed" in text
+
+
+def test_notify_event_target1_and_skips_other_kinds(monkeypatch):
+    from datetime import timedelta
+    from psygrid.config import load_config
+    from psygrid.signal_state import SignalStateManager
+    calls = []
+    n = _enabled_notifier(monkeypatch, _fake_poster(calls))
+    m = SignalStateManager(load_config())
+    _, _, emitted = m.consider(sig(), T0)
+    assert n.notify_event(emitted[0]) is False  # the new signal itself goes via notify_signal
+    ev = m.track("NIFTY", 23262, T0 + timedelta(minutes=2), False, option_ltp=lambda s: 120.0)
+    assert n.notify_event(ev[0]) is True
+    assert "TARGET 1 HIT" in calls[-1]["json"]["text"] and "+20.00 pts (+20.0%)" in calls[-1]["json"]["text"]
+    ev = m.track("NIFTY", 23199, T0 + timedelta(minutes=3), False, option_ltp=lambda s: 98.0)
+    sent = [n.notify_event(e) for e in ev]
+    assert [e.event for e in ev] == ["INVALIDATED", "CLOSED"] and sent == [False, True]
+    assert "CLOSED: invalidated" in calls[-1]["json"]["text"]

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Callable, Optional
 
 from .config import Config
 
@@ -63,6 +63,8 @@ class Signal:
     state_ts: Optional[datetime] = None
     history: list[tuple[datetime, str, str]] = field(default_factory=list)
     stop: Optional[float] = None      # current virtual stop; starts at the emitted invalidation
+    last_option_ltp: Optional[float] = None   # latest observed LTP of the signalled contract
+    last_underlying: Optional[float] = None
 
     def __post_init__(self):
         if self.stop is None:
@@ -84,6 +86,27 @@ class SignalEvent:
     event: str
     text: str
     signal_id: Optional[str] = None
+    entry_ltp: Optional[float] = None     # option LTP when the signal was emitted
+    option_ltp: Optional[float] = None    # option LTP at this event (last observed)
+    underlying: Optional[float] = None
+
+    @property
+    def pnl(self) -> Optional[float]:
+        if self.entry_ltp is None or self.option_ltp is None:
+            return None
+        return round(self.option_ltp - self.entry_ltp, 2)
+
+    @property
+    def pnl_pct(self) -> Optional[float]:
+        if self.pnl is None or not self.entry_ltp:
+            return None
+        return round(100 * self.pnl / self.entry_ltp, 1)
+
+    def pnl_text(self) -> str:
+        if self.pnl is None:
+            return "option LTP n/a"
+        return (f"option {self.entry_ltp:.2f} -> {self.option_ltp:.2f} "
+                f"({self.pnl:+.2f}, {self.pnl_pct:+.1f}%)")
 
 
 class SignalStateManager:
@@ -105,19 +128,35 @@ class SignalStateManager:
     def _transition(self, s: Signal, state: str, now: datetime, note: str, events: list) -> None:
         s.state, s.state_ts = state, now
         s.history.append((now, state, note))
-        events.append(SignalEvent(now, s.index, state,
-                                  f"{s.index} {s.direction} {s.strike:,.0f} {s.option_type}: {state} — {note}", s.id))
+        ev = SignalEvent(now, s.index, state, "", s.id, entry_ltp=s.option_ltp,
+                         option_ltp=s.last_option_ltp, underlying=s.last_underlying)
+        ev.text = f"{s.index} {s.direction} {s.strike:,.0f} {s.option_type}: {state} — {note}"
+        if state in ("TARGET_1", "CLOSED") and ev.pnl is not None:
+            ev.text += f" [{ev.pnl_text()}]"
+        events.append(ev)
 
     def _close(self, s: Signal, now: datetime, note: str, events: list) -> None:
         self._transition(s, "CLOSED", now, note, events)
         self.closed.setdefault(s.index, []).append(s)
         self.active.pop(s.index, None)
 
-    def track(self, index: str, price: Optional[float], now: datetime, session_closing: bool) -> list[SignalEvent]:
+    def track(self, index: str, price: Optional[float], now: datetime, session_closing: bool,
+              option_ltp: Optional[Callable[[Signal], Optional[float]]] = None) -> list[SignalEvent]:
+        """``option_ltp`` looks up the signalled contract's current LTP (from
+        this cycle's option chain) so exit events can report P&L."""
         s = self.active.get(index)
         events: list[SignalEvent] = []
         if s is None:
             return events
+        if option_ltp is not None:
+            try:
+                ltp = option_ltp(s)
+            except Exception:
+                ltp = None
+            if ltp is not None and ltp > 0:
+                s.last_option_ltp = ltp
+        if price is not None:
+            s.last_underlying = price
         if session_closing:
             self._close(s, now, "session close", events)
             return events

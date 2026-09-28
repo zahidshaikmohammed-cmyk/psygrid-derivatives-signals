@@ -30,7 +30,7 @@ from typing import Callable, Optional
 
 import requests
 
-from .signal_state import Signal
+from .signal_state import Signal, SignalEvent
 
 _TELEGRAM_API_BASE = "https://api.telegram.org"
 _REQUEST_TIMEOUT_SECONDS = 10.0
@@ -81,6 +81,32 @@ class TelegramNotifier:
             f"Level: {sig.level_type} @ {sig.key_level_price:,.2f}",
             "Signal-only - no order has been placed.",
         ]
+        return self._send("\n".join(lines))
+
+    # Lifecycle events worth a message. INVALIDATED and TARGET_2 are always
+    # followed in the same cycle by a CLOSED event carrying the same reason
+    # ("invalidated" / "final target reached"), so only CLOSED is sent.
+    EVENT_KINDS = ("TARGET_1", "CLOSED")
+
+    def notify_event(self, ev: SignalEvent) -> bool:
+        if ev.event not in self.EVENT_KINDS:
+            return False
+        head, _, note = ev.text.partition(" — ")
+        contract = head.split(":")[0]
+        note = note.split(" [")[0]
+        if ev.event == "TARGET_1":
+            title = f"{contract} - TARGET 1 HIT (stop moved to entry)"
+        else:
+            title = f"{contract} - CLOSED: {note}"
+        lines = [title]
+        if ev.pnl is not None:
+            lines.append(f"Option LTP: {ev.option_ltp:.2f} (signal {ev.entry_ltp:.2f})  "
+                         f"P&L: {ev.pnl:+.2f} pts ({ev.pnl_pct:+.1f}%)")
+        else:
+            lines.append("Option LTP: unavailable")
+        if ev.underlying is not None:
+            lines.append(f"Underlying: {ev.underlying:,.2f}")
+        lines.append("Signal-only - no order has been placed.")
         return self._send("\n".join(lines))
 
     def send_test_message(self) -> bool:

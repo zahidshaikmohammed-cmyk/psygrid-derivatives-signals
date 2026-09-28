@@ -139,6 +139,16 @@ class IndexPipeline:
             snap.adapter_issues[feed] = issues
         return snap
 
+    @staticmethod
+    def _option_ltp_lookup(chain):
+        if chain is None:
+            return None
+
+        def lookup(sig: Signal):
+            q = chain.quote(sig.strike, sig.option_type)
+            return q.ltp if q is not None else None
+        return lookup
+
     def run(self, raws: dict[str, RawResponse], ref: datetime, phase: str,
             state: SignalStateManager) -> tuple[IndexDecision, list[SignalEvent]]:
         day = ref.strftime("%Y-%m-%d")
@@ -198,7 +208,8 @@ class IndexPipeline:
         liq = self.liquidity.analyze(bars1, st, lm.zones, price, or_end)
         dec.liquidity = liq
 
-        events += state.track(self.index, price, ref, session_closing=phase == CLOSING)
+        events += state.track(self.index, price, ref, session_closing=phase == CLOSING,
+                              option_ltp=self._option_ltp_lookup(snap.chain if gate.usable("options") else None))
         dec.active = state.active.get(self.index)
 
         if not st.ready:

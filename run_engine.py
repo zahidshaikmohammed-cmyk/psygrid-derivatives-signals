@@ -74,6 +74,14 @@ def notify_new_signals(res: CycleResult, notifier: TelegramNotifier) -> None:
         except Exception as exc:  # notification is never allowed to crash the engine
             print(f"[telegram] unexpected error sending notification: {type(exc).__name__}: {exc}",
                   file=sys.stderr)
+    # follow-ups on signals already sent: T1 hit and every close (target,
+    # invalidation, time stop, opposing signal, session close) with P&L
+    for ev in res.events:
+        try:
+            notifier.notify_event(ev)
+        except Exception as exc:
+            print(f"[telegram] unexpected error sending notification: {type(exc).__name__}: {exc}",
+                  file=sys.stderr)
 
 
 def main(argv=None) -> int:
