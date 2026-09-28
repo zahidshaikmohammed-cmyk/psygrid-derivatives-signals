@@ -196,6 +196,27 @@ DEFAULTS: dict[str, Any] = {
         "tick": 0.05,
     },
 
+    # --------------------------------------------------------------- entry
+    # Entry location for LEVEL-ANCHORED setups (retests, reversals at a level,
+    # failed breaks, sweeps + reclaim, VWAP rejection). Their confirmations
+    # (momentum, last-3-bars, premium flow) peak at the END of a burst away
+    # from the level, so the setup is usually recognised at the burst's
+    # extreme. When price has run more than max_impulse_ranges x avg range
+    # over the last impulse_bars 1m bars in the signal direction, the signal
+    # waits for a pullback of pullback_retrace x that burst (never through the
+    # invalidation) for at most pullback_valid_minutes, then expires as an
+    # explicit no-trade; the same opportunity is not re-armed for
+    # reentry_block_minutes. MOMENTUM-family setups (acceptance, momentum
+    # continuation, VWAP reclaim) always enter immediately - they are defined
+    # by price moving away and are bounded by setups.max_chase_ranges.
+    "entry": {
+        "impulse_bars": 4,
+        "max_impulse_ranges": 1.5,
+        "pullback_retrace": 0.382,
+        "pullback_valid_minutes": 15,
+        "reentry_block_minutes": 30,
+    },
+
     # -------------------------------------------------------- signal state
     "signal_state": {
         "cooldown_seconds": 300,

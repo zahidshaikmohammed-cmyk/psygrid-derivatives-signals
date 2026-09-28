@@ -145,10 +145,24 @@ Unknown keys are rejected, so typos can't slip through. Settings you'll most lik
 | `setups.min_room_ranges` | 1.0 | floor (in avg ranges) for the room to the next major opposing level; the room a setup needs is `max(floor, risk.min_reward_risk × its own risk)` |
 | `risk.target_min_strength` | 50 | tier-2 levels weaker than this are ignored as targets / room limits |
 | `setups.max_chase_ranges` | 2.5 | no chasing beyond this distance from the level |
+| `entry.max_impulse_ranges` / `impulse_bars` | 1.5 / 4 | a level-anchored setup found after a move of more than 1.5 avg ranges in the last 4 min waits for a pullback |
+| `entry.pullback_retrace` / `pullback_valid_minutes` | 0.382 / 15 | pullback depth (of the whole move) and how long to wait before EXPIRED (no trade) |
+| `entry.reentry_block_minutes` | 30 | an expired opportunity is not re-armed or chased for this long |
 | `integrity.max_age_seconds.*` | 20–30 s | staleness limits per feed |
 | `integrity.accepted_feed_status.*` | LIVE / OK | payload statuses accepted (fail-closed) |
 | `session.no_new_entries_after` / `close_signals_at` | 15:00 / 15:20 | late-session rules |
 | `options.max_spread_pct`, `options.delta_band`, `options.min/max_premium` | 3%, 0.30–0.70, per index | contract filters |
+
+**Entry location.** Setups in the MOMENTUM family (breakout/breakdown + acceptance, momentum
+continuation, VWAP reclaim) always enter immediately — they are defined by price moving away and
+are bounded by `max_chase_ranges`, so a trend that never pulls back can never lose them. All
+level-anchored setups (retests, bounce/rejection, multi-factor, failed breaks, sweep + reclaim, range
+extreme, VWAP rejection) that are detected right after a sharp burst away from their level wait for
+a pullback instead of chasing: `ENTRY STATE: WAITING FOR PULLBACK` → `PULLBACK RECEIVED` (signal) or
+`EXPIRED` / `CANCELLED` (no trade, with the reason). The stop and every gate are unchanged; the risk
+plan is recomputed at the pullback price. Every index shows one `ENTRY STATE:` line (NO SETUP, SETUP
+DETECTED, WAITING FOR PULLBACK, PULLBACK RECEIVED, EXPIRED, CANCELLED, SIGNAL-GRADE BUT BLOCKED, RISK
+REJECTED, SUPPRESSED, SIGNAL AUTHORIZED), also logged as `entry_state` in `decisions.jsonl`.
 
 **None of these thresholds were fitted to live or future data.** Calibrate them later from
 `logs/` on out-of-sample days.

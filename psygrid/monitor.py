@@ -93,6 +93,8 @@ class Monitor:
                  "WATCH": "WATCH", "NO_TRADE": "WAIT", "DATA_GATE_BLOCKED": "BLOCKED",
                  "MARKET_CLOSED": "CLOSED", "WARMING_UP": "WARMING UP"}[d.status]
         why = (d.reasons[:1] or d.waiting[:1] or [""])[0]
+        if d.entry_state in ("WAITING FOR PULLBACK", "EXPIRED", "CANCELLED") and d.entry_detail:
+            why = f"{d.entry_state}: {d.entry_detail}"
         if d.status == "NO_TRADE" and d.waiting and why.startswith("no valid setup"):
             why = d.waiting[0]
         if d.signal is not None:
@@ -117,12 +119,17 @@ class Monitor:
             out.append(self.c("DATA GATE BLOCKED — TRADING AUTHORIZATION = BLOCKED", BOLD, YELLOW))
             for r in d.reasons:
                 out.append(f"  reason: {r}")
+            if d.entry_detail:
+                out.append(self.entry_line(d))
             return out
         if d.signal is not None:
+            out.append(self.entry_line(d))
             out += self.signal_block(d.signal)
             out += self.level_map(d)
             return out
         out += self.level_map(d)
+        if d.status != "WARMING_UP":
+            out.append(self.entry_line(d))
         if d.status == "WARMING_UP":
             out.append(self.c("DATA NOT READY — WARMING UP", BOLD, YELLOW) + f": {'; '.join(d.reasons)}")
             cov = d.coverage
@@ -160,6 +167,18 @@ class Monitor:
         for c in d.candidates[:3]:
             out.append(self.c(f"  candidate: {c}", DIM))
         return out
+
+    ENTRY_COLORS = {"SIGNAL AUTHORIZED": GREEN, "PULLBACK RECEIVED": GREEN, "WAITING FOR PULLBACK": YELLOW,
+                    "EXPIRED": YELLOW, "CANCELLED": YELLOW, "SIGNAL-GRADE BUT BLOCKED": YELLOW,
+                    "RISK REJECTED": YELLOW, "SUPPRESSED": YELLOW, "DATA BLOCKED": RED}
+
+    def entry_line(self, d: IndexDecision) -> str:
+        """One unambiguous line per index: NO SETUP / SETUP DETECTED / WAITING
+        FOR PULLBACK / PULLBACK RECEIVED / EXPIRED / CANCELLED / SIGNAL-GRADE
+        BUT BLOCKED / RISK REJECTED / SUPPRESSED / SIGNAL AUTHORIZED."""
+        line = f"ENTRY STATE: {d.entry_state}" + (f" — {d.entry_detail}" if d.entry_detail else "")
+        col = self.ENTRY_COLORS.get(d.entry_state)
+        return self.c(line[:220], BOLD, col) if col else self.c(line[:220], BOLD)
 
     def trace_lines(self, d: IndexDecision) -> list[str]:
         """Renders IndexDecision.trace (diagnostics.py) so a repeated
